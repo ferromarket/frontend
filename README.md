@@ -1,5 +1,7 @@
 # frontend
 
+[![ci](https://github.com/ferromarket/frontend/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/ferromarket/frontend/actions/workflows/main.yml)
+
 ## Project setup
 ```
 yarn install
