@@ -1,15 +1,17 @@
-import Vue from 'vue'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-// Import Bootstrap an BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
+import PrimeVue from 'primevue/config';
+import 'primevue/resources/themes/mdc-light-indigo/theme.css';
+import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css';
 
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+import Menubar from 'primevue/menubar';
+import InputText from 'primevue/inputtext';
 
-Vue.config.productionTip = false
+const app = createApp(App);
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+app.use(PrimeVue);
+app.component('MenuBar', Menubar);
+app.component('InputText', InputText);
+
+app.mount('#app');
