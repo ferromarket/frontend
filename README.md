@@ -1,7 +1,5 @@
 # frontend
 
-[![ci](https://github.com/ferromarket/frontend/actions/workflows/main.yml/badge.svg?event=push)](https://github.com/ferromarket/frontend/actions/workflows/main.yml)
-
 ## Project setup
 ```
 yarn install
