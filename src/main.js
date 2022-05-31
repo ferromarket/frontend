@@ -5,6 +5,7 @@ import 'primevue/resources/themes/mdc-light-indigo/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 
+import Menubar from 'primevue/menubar';
 import InputText from 'primevue/inputtext';
 
 import { createRouter, createWebHistory } from 'vue-router';
@@ -13,7 +14,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
 const MainNavbar = () => import(/* webpackChunkName: "navbar" */ './layouts/MainNavbar.vue');
-const Menubar = () => import(/* webpackChunkName: "navbar" */ 'primevue/menubar');
 
 const MainFooter = () => import(/* webpackChunkName: "footer" */ './layouts/MainFooter.vue');
 
