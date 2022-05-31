@@ -58,7 +58,8 @@ export default {
     border: 0;
     border-radius: 0;
     padding: 5px;
-    background: var(--orange-500) !important;
+    background: var(--orange-400) !important;
+    color: var(--surface-0) !important;
     text-align: right;
 }
 </style>
