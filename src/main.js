@@ -4,9 +4,17 @@ import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/mdc-light-indigo/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
+
+import axios from 'axios';
 
 import Menubar from 'primevue/menubar';
+import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
+import Dropdown from 'primevue/dropdown';
+import Textarea from 'primevue/textarea';
+import Button from 'primevue/button';
+import Checkbox from 'primevue/checkbox';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -20,6 +28,8 @@ const MainFooter = () => import(/* webpackChunkName: "footer" */ './layouts/Main
 const IndexView = () => import(/* webpackChunkName: "index_view" */ './views/IndexView.vue');
 
 const HelloWorld = () => import(/* webpackChunkName: "hello_world" */ './views/HelloWorld.vue');
+
+const CreateFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/CreateFerreteria.vue');
 
 const routes = [
     {
@@ -39,6 +49,15 @@ const routes = [
             header: MainNavbar,
             footer: MainFooter
         }
+    },
+    {
+        path: '/ferreteria/create',
+        name: 'Crear ferreteria',
+        components: {
+            default: CreateFerreteria,
+            header: MainNavbar,
+            footer: MainFooter
+        }
     }
 ];
 
@@ -51,9 +70,16 @@ const app = createApp(App);
 
 app.use(PrimeVue);
 app.component('MenuBar', Menubar);
+app.component('CardPanel', Card);
 app.component('InputText', InputText);
+app.component('TextArea', Textarea);
+app.component('DropDown', Dropdown);
+app.component('ButtonComponent', Button);
+app.component('CheckBox', Checkbox);
 
 app.use(router);
+
+app.config.globalProperties.axios=axios
 
 app.mount('#app');
 
