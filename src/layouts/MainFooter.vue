@@ -1,3 +1,3 @@
 <template>
-    <div>Footer here</div>
+    <div><!--Footer here--></div>
 </template>
