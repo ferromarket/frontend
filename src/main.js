@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import PrimeVue from 'primevue/config';
+import ConfirmationService from 'primevue/confirmationservice';
 import 'primevue/resources/themes/mdc-light-indigo/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
@@ -15,6 +16,8 @@ import Dropdown from 'primevue/dropdown';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
+import ConfirmDialog from 'primevue/confirmdialog';
+import Dialog from 'primevue/dialog';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -69,6 +72,7 @@ const router = createRouter({
 const app = createApp(App);
 
 app.use(PrimeVue);
+app.use(ConfirmationService);
 app.component('MenuBar', Menubar);
 app.component('CardPanel', Card);
 app.component('InputText', InputText);
@@ -76,6 +80,8 @@ app.component('TextArea', Textarea);
 app.component('DropDown', Dropdown);
 app.component('ButtonComponent', Button);
 app.component('CheckBox', Checkbox);
+app.component('ConfirmDialog', ConfirmDialog);
+app.component('DialogBox', Dialog);
 
 app.use(router);
 
