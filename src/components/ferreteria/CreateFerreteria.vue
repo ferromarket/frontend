@@ -85,11 +85,6 @@
                 <label for="descripcion">Descripción</label>
             </span>
         </div>
-        <!--<div class="col-12">
-            <span class="p-float-label">
-                <h2>Lunes</h2>
-            </span>
-        </div>-->
         <div class="field col-6">
             <span class="p-float-label">
                 <DropDown id="abrir" v-model="selectedAbrir" :options="horas" optionLabel="Hora" placeholder="&#8205;" v-bind:class="{ 'p-invalid': horasError }">
