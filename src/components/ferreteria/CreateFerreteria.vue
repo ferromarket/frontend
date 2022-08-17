@@ -141,7 +141,7 @@ export default {
         onMounted(() => {
             getRegiones();
             getHoras();
-        })
+        });
 
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
