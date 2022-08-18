@@ -178,6 +178,7 @@ export default {
                     message: 'Crear ferretería "' + nombre.value + '"?',
                     header: 'Confirmación',
                     icon: 'pi pi-info-circle',
+                    acceptClass: 'p-button-warning',
                     accept: () => {
                         crearFerreteria();
                     },

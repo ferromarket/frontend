@@ -229,6 +229,7 @@ export default {
                     message: 'Modificar ferretería "' + nombre.value + '"?',
                     header: 'Confirmación',
                     icon: 'pi pi-info-circle',
+                    acceptClass: 'p-button-warning',
                     accept: () => {
                         modificarFerreteria();
                     },
