@@ -18,6 +18,8 @@ import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Dialog from 'primevue/dialog';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -31,8 +33,8 @@ const MainFooter = () => import(/* webpackChunkName: "footer" */ './layouts/Main
 const IndexView = () => import(/* webpackChunkName: "index_view" */ './views/IndexView.vue');
 
 const CreateFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/CreateFerreteria.vue');
-
 const ModifyFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ModifyFerreteria.vue');
+const ListFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ListFerreteria.vue');
 
 const routes = [
     {
@@ -54,8 +56,17 @@ const routes = [
         }
     },
     {
-        path: '/ferreteria/create',
-        name: 'Crear ferreteria',
+        path: '/ferreteria',
+        name: 'Ferreterías',
+        components: {
+            default: ListFerreteria,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/ferreteria/crear',
+        name: 'Crear ferretería',
         components: {
             default: CreateFerreteria,
             header: MainNavbar,
@@ -63,8 +74,8 @@ const routes = [
         }
     },
     {
-        path: '/ferreteria/modify/:id',
-        name: 'Modify ferreteria',
+        path: '/ferreteria/modificar/:id',
+        name: 'Modificar ferretería',
         components: {
             default: ModifyFerreteria,
             header: MainNavbar,
@@ -135,6 +146,8 @@ app.component('ButtonComponent', Button);
 app.component('CheckBox', Checkbox);
 app.component('ConfirmDialog', ConfirmDialog);
 app.component('DialogBox', Dialog);
+app.component('DataTable', DataTable);
+app.component('DataColumn', Column);
 
 app.use(router);
 
