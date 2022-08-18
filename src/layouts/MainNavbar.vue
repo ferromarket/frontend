@@ -1,7 +1,7 @@
 <template>
     <MenuBar :model="items" class="navbar">
         <template #start>
-            <img alt="logo" src="../assets/FerroMarket.png" height="80" class="mr-2">
+            <router-link to="/"><img alt="logo" src="../assets/FerroMarket.png" height="80" class="mr-2"></router-link>
         </template>
         <template #end>
             <InputText placeholder="Search" type="text" />
@@ -16,34 +16,24 @@ export default {
     setup() {
         const items = ref([
             {
-                label:'File',
-                icon:'pi pi-fw pi-file',
-                items:[
+                label: '',
+                icon: 'pi pi-fw pi-bars',
+                items: [
                     {
-                        label:'New',
-                        icon:'pi pi-fw pi-plus',
-                        items:[
+                        label: 'Ferreterías',
+                        //icon: 'pi pi-fw pi-plus',
+                        to: '/ferreteria',
+                        items: [
                             {
-                                label:'Bookmark',
-                                icon:'pi pi-fw pi-bookmark'
-                            },
-                            {
-                                label:'Video',
-                                icon:'pi pi-fw pi-video'
-                            },
+                                label: 'Crear',
+                                //icon:'pi pi-fw pi-plus',
+                                to: '/ferreteria/create'
+                            }
                         ]
                     },
-                    {
-                        label:'Delete',
-                        icon:'pi pi-fw pi-trash'
-                    },
-                    {
-                        separator:true
-                    },
-                    {
-                        label:'Export',
-                        icon:'pi pi-fw pi-external-link'
-                    }
+                    /*{
+                        separator: true
+                    }*/
                 ]
             }
         ]);
