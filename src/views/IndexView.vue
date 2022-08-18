@@ -1,14 +1,14 @@
 <template>
-    <HelloWorld/>
+    <IndexPage/>
 </template>
 
 <script>
-import HelloWorld from '../components/IndexPage.vue'
+import IndexPage from '../components/IndexPage.vue'
 
 export default {
     name: 'App',
     components: {
-        HelloWorld
+        IndexPage
     }
 }
 </script>

@@ -30,16 +30,14 @@ const MainFooter = () => import(/* webpackChunkName: "footer" */ './layouts/Main
 
 const IndexView = () => import(/* webpackChunkName: "index_view" */ './views/IndexView.vue');
 
-const HelloWorld = () => import(/* webpackChunkName: "hello_world" */ './views/HelloWorld.vue');
-
 const CreateFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/CreateFerreteria.vue');
 
 const ModifyFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ModifyFerreteria.vue');
 
 const routes = [
     {
-        path: '/',
-        name: 'Home',
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
         components: {
             default: IndexView,
             header: MainNavbar,
@@ -47,10 +45,10 @@ const routes = [
         }
     },
     {
-        path: '/about',
-        name: 'About',
+        path: '/',
+        name: 'Inicio',
         components: {
-            default: HelloWorld,
+            default: IndexView,
             header: MainNavbar,
             footer: MainFooter
         }
