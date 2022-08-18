@@ -1,4 +1,5 @@
 <template>
+    <ConfirmDialog/>
     <DataTable :value="ferreterias" dataKey="ID" responsiveLayout="scroll" :paginator="true" :rows="10"
             v-model:filters="filters"
             stripedRows
@@ -6,7 +7,7 @@
             :rowsPerPageOptions="[10,20,50]"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
             filterDisplay="menu"
-            :globalFilterFields="['Nombre', 'Direccion', 'Abrir', 'Cerrar']">
+            :globalFilterFields="['Nombre', 'Region', 'Ciudad', 'Comuna', 'Direccion', 'Abrir', 'Cerrar']">
         <template #header>
             <div class="flex justify-content-between">
                 <span class="p-input-icon-left">
@@ -35,7 +36,8 @@
 <script>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
+import { FilterMatchMode } from 'primevue/api';
+import { useConfirm } from "primevue/useconfirm";
 import axios from 'axios';
 
 export default {
@@ -45,6 +47,8 @@ export default {
         });
 
         const router = useRouter();
+
+        const confirm = useConfirm();
 
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
@@ -56,20 +60,8 @@ export default {
         const ferreterias = ref([]);
 
         const filters = ref({
-            'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-            'Nombre': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-            'Direccion': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-            'Abrir': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]}
+            'global': {value: null, matchMode: FilterMatchMode.CONTAINS}
         });
-
-        const initFilters = () => {
-            filters.value = {
-                'global': {value: null, matchMode: FilterMatchMode.CONTAINS},
-                'Nombre': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-                'Direccion': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]},
-                'Abrir': {operator: FilterOperator.AND, constraints: [{value: null, matchMode: FilterMatchMode.STARTS_WITH}]}
-            };
-        };
 
         const getFerreterias = () => {
             axios
@@ -103,13 +95,41 @@ export default {
             router.push("/ferreteria/modificar/" + ferreteria.ID);
         };
 
+        const confirmDeleteFerreteria = (ferreteria) => {
+            confirm.require({
+                message: 'Estás seguro que quieres eliminar la ferretería "' + ferreteria.Nombre + '"?',
+                header: 'Confirmación',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    deleteFerreteria(ferreteria);
+                },
+                reject: () => {
+                    console.log("rejected");
+                }
+            });
+        };
+
+        const deleteFerreteria = (ferreteria) => {
+            axios
+                .delete(api + "/ferreteria/" + ferreteria.ID)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            ferreterias.value = ferreterias.value.filter(data => data.ID != ferreteria.ID);
+        };
+
         return {
             getFerreterias,
             createFerreteria,
             modifyFerreteria,
+            confirmDeleteFerreteria,
+            deleteFerreteria,
             ferreterias,
             filters,
-            initFilters,
             displayModal,
             modalMessage
         };
