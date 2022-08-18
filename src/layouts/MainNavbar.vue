@@ -1,7 +1,7 @@
 <template>
     <MenuBar :model="items" class="navbar">
         <template #start>
-            <router-link to="/"><img alt="logo" src="../assets/FerroMarket.png" height="80" class="mr-2"></router-link>
+            <router-link to="/"><img alt="logo" src="../assets/FerroMarket.png" height="50" class="mr-2"></router-link>
         </template>
         <template #end>
             <InputText placeholder="Search" type="text" />
