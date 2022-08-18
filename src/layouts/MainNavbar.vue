@@ -23,13 +23,13 @@ export default {
                         label: 'Ferreterías',
                         //icon: 'pi pi-fw pi-plus',
                         to: '/ferreteria',
-                        items: [
+                        /*items: [
                             {
                                 label: 'Crear',
                                 //icon:'pi pi-fw pi-plus',
-                                to: '/ferreteria/create'
+                                to: '/ferreteria/crear'
                             }
-                        ]
+                        ]*/
                     },
                     /*{
                         separator: true
