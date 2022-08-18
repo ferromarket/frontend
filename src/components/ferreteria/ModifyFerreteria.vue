@@ -133,7 +133,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
 
