@@ -54,9 +54,6 @@ export default {
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
 
-        const displayModal = ref(false);
-        const modalMessage = ref("");
-
         const ferreterias = ref([]);
 
         const filters = ref({
@@ -129,9 +126,7 @@ export default {
             confirmDeleteFerreteria,
             deleteFerreteria,
             ferreterias,
-            filters,
-            displayModal,
-            modalMessage
+            filters
         };
     }
 };
