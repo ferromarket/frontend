@@ -3,7 +3,7 @@
         <CardPanel class="flex justify-content-center">
             <template #title>
                 <div class="flex justify-content-center flex-wrap card-container">
-                    <h2>Modify Ferretería</h2>
+                    <h2>Modificar Ferretería</h2>
                 </div>
             </template>
             <template #content>
