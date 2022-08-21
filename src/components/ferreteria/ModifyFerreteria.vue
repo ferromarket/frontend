@@ -1,9 +1,9 @@
 <template>
     <ConfirmDialog/>
-    <DialogBox header="Error" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '25vw'}" :modal="true">
-        <p class="m-0">{{modalMessage}}</p>
+    <DialogBox v-bind:header="dialogTitle" v-model:visible="displayModal" :closable="false" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '25vw'}" :modal="true">
+        <p class="m-0">{{ modalMessage }}</p>
         <template #footer>
-            <ButtonComponent label="Cerrar" icon="pi pi-check" @click="closeModal" class="p-button-danger" autofocus />
+            <ButtonComponent label="Cerrar" icon="pi pi-check" @click="closeModal" v-bind:class="{ 'p-button-danger': error }" autofocus />
         </template>
     </DialogBox>
     <div class="w-full justify-content-center p-fluid grid">
@@ -133,7 +133,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
 
@@ -143,6 +143,7 @@ export default {
             getRegiones();
         });
 
+        const router = useRouter();
         const route = useRoute();
 
         // si el puerto es 8080, no es con proxy
@@ -152,6 +153,8 @@ export default {
         const confirm = useConfirm();
         const displayModal = ref(false);
         const modalMessage = ref("");
+        const dialogCallback = ref();
+        const dialogTitle = ref("Error");
 
         const ferreteria = ref();
 
@@ -175,6 +178,8 @@ export default {
         const direccionError = ref(false);
         const descripcionError = ref(false);
         const horasError = ref(false);
+
+        const error = ref(false);
 
         const getFerreteria = () => {
             axios
@@ -248,51 +253,69 @@ export default {
             direccionError.value = false;
             descripcionError.value = false;
             horasError.value = false;
+            error.value = false;
             if (nombre.value.trim() === "") {
                 nombreError.value = true;
+                error.value = true;
                 openModal("Falta nombre de la ferretería!");
                 return false;
             }
             if (selectedRegion.value === null) {
                 selectedRegionError.value = true;
+                error.value = true;
                 openModal("Falta seleccionar una región!");
                 return false;
             }
             if (selectedCiudad.value === null) {
                 selectedCiudadError.value = true;
+                error.value = true;
                 openModal("Falta seleccionar una ciudad!");
                 return false;
             }
             if (selectedComuna.value === null) {
                 selectedComunaError.value = true;
+                error.value = true;
                 openModal("Falta seleccionar una comuna!");
                 return false;
             }
             if (direccion.value.trim() === "") {
                 direccionError.value = true;
+                error.value = true;
                 openModal("Falta dirección de la ferretería!");
                 return false;
             }
             if (descripcion.value.trim() === "") {
                 descripcionError.value = true;
+                error.value = true;
                 openModal("Falta descripción de la ferretería!");
                 return false;
             }
             if (selectedAbrir.value.ID >= selectedCerrar.value.ID) {
                 horasError.value = true;
+                error.value = true;
                 openModal("La hora de abrir tiene que ser antes de cerrar!");
                 return false;
             }
             return true;
         };
 
-        const openModal = (message) => {
+        const openModal = (message, callback = null) => {
             modalMessage.value = message;
+            dialogCallback.value = callback;
+            if (callback === null) {
+                dialogTitle.value = "Error";
+            }
+            else {
+                dialogTitle.value = "Éxito";
+            }
             displayModal.value = true;
         };
 
         const closeModal = () => {
             displayModal.value = false;
+            if (dialogCallback.value !== null && typeof dialogCallback.value === 'function') {
+                dialogCallback.value();
+            }
         };
 
         const modificarFerreteria = () => {
@@ -315,13 +338,20 @@ export default {
                     Horarios: horarios
                 })
                 .then(function (response) {
-                    if (response !== null && response.status != 204) {
+                    if (response !== null && response.status == 200) {
+                        openModal("Ferretería modificada exitosamente!", redirect);
+                    }
+                    else {
                         console.log(response);
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+        };
+
+        const redirect = () => {
+            router.push({name: "Mostrar ferretería"});
         };
 
         const getHoras = (data) => {
@@ -433,9 +463,11 @@ export default {
             modificarFerreteria,
             validar,
             displayModal,
+            dialogTitle,
             modalMessage,
             openModal,
-            closeModal
+            closeModal,
+            error
         };
     }
 };
