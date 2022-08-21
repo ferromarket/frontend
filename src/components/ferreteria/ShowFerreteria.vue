@@ -37,6 +37,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
+import router from '@/main';
 
 export default {
     setup() {
@@ -73,6 +74,9 @@ export default {
                     ferreteria.value = response.data;
                 })
                 .catch(err => {
+                    if (err.response.status === 404) {
+                        router.push("/ferreterias");
+                    }
                     console.log(err);
                 });
         };
