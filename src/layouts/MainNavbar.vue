@@ -31,6 +31,18 @@ export default {
                     /*{
                         separator: true
                     }*/
+                    {
+                        label: 'Productos',
+                        //icon: 'pi pi-fw pi-plus',
+                        to: '/producto',
+                        /*items: [
+                            {
+                                label: 'Crear',
+                                //icon:'pi pi-fw pi-plus',
+                                to: '/producto/crear'
+                            }
+                        ]*/
+                    },
                 ]
             }
         ]);
