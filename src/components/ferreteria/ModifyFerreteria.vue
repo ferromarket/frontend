@@ -224,6 +224,9 @@ export default {
                     getHoras(response.data.Horarios[0]);
                 })
                 .catch(err => {
+                    if (err.response.status === 404) {
+                        router.push("/ferreterias");
+                    }
                     console.log(err);
                 });
         };
