@@ -2,6 +2,8 @@
     <ConfirmDialog/>
     <DataTable :value="ferreterias" dataKey="ID" responsiveLayout="scroll" :paginator="true" :rows="10"
             v-model:filters="filters"
+            selectionMode="single"
+            @rowSelect="rowSelected"
             stripedRows
             paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
             :rowsPerPageOptions="[10,20,50]"
@@ -57,8 +59,12 @@ export default {
         const ferreterias = ref([]);
 
         const filters = ref({
-            'global': {value: null, matchMode: FilterMatchMode.CONTAINS}
+            'global': { value: null, matchMode: FilterMatchMode.CONTAINS }
         });
+
+        const rowSelected = (event) => {
+            router.push("/ferreteria/" + event.data.ID);
+        };
 
         const getFerreterias = () => {
             axios
@@ -126,7 +132,8 @@ export default {
             confirmDeleteFerreteria,
             deleteFerreteria,
             ferreterias,
-            filters
+            filters,
+            rowSelected
         };
     }
 };

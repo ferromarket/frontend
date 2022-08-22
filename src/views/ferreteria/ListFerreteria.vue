@@ -1,11 +1,9 @@
 <template>
-    <div class="sm:col-6 sm:col-offset-3">
-        <CardPanel class="flex justify-content-center">
-            <template #content>
-                <ListFerreteria/>
-            </template>
-        </CardPanel>
-    </div>
+    <CardPanel class="flex justify-content-center sm:col-6 sm:col-offset-3">
+        <template #content>
+            <ListFerreteria/>
+        </template>
+    </CardPanel>
 </template>
 
 <script>

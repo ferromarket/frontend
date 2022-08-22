@@ -35,6 +35,7 @@ const IndexView = () => import(/* webpackChunkName: "index_view" */ './views/Ind
 const CreateFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/CreateFerreteria.vue');
 const ModifyFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ModifyFerreteria.vue');
 const ListFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ListFerreteria.vue');
+const ShowFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ShowFerreteria.vue');
 
 const routes = [
     {
@@ -56,10 +57,19 @@ const routes = [
         }
     },
     {
-        path: '/ferreteria',
+        path: '/ferreterias',
         name: 'Ferreterías',
         components: {
             default: ListFerreteria,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/ferreteria/:id',
+        name: 'Mostrar ferretería',
+        components: {
+            default: ShowFerreteria,
             header: MainNavbar,
             footer: MainFooter
         }
