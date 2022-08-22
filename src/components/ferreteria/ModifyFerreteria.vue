@@ -125,15 +125,15 @@
                 <label for="cerrar">Horario de cerrar</label>
             </span>
         </div>
-        <div class="field col-12 sm:col-2">
-            <ButtonComponent @click="crearFerreteriaClicked" class="ferro" label="Crear" icon="pi pi-check" iconPos="right" />
+        <div class="field col-12 sm:col-3">
+            <ButtonComponent @click="modificarFerreteriaClicked" class="ferro" label="Modificar" icon="pi pi-check" iconPos="right" />
         </div>
     </div>                    
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
 
@@ -141,10 +141,10 @@ export default {
     setup() {
         onMounted(() => {
             getRegiones();
-            getHoras();
         });
 
         const router = useRouter();
+        const route = useRoute();
 
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
@@ -155,6 +155,8 @@ export default {
         const modalMessage = ref("");
         const dialogCallback = ref();
         const dialogTitle = ref("Error");
+
+        const ferreteria = ref();
 
         const nombre = ref("");
         const direccion = ref("");
@@ -179,17 +181,65 @@ export default {
 
         const error = ref(false);
 
-        const savedID = ref(0);
+        const getFerreteria = () => {
+            axios
+                .get(api + "/ferreteria/" + route.params.id)
+                .then((response) => {
+                    ferreteria.value = response.data;
+                    nombre.value = response.data.Nombre;
+                    direccion.value = response.data.Direccion;
+                    descripcion.value = response.data.Descripcion;
+                    regiones.value.forEach(element => {
+                        if (element.ID == response.data.Comuna.Ciudad.RegionID) {
+                            selectedRegion.value = element;
+                        }
+                    });
+                    axios
+                        .get(api + "/ciudades/" + response.data.Comuna.Ciudad.RegionID)
+                        .then((response2) => {
+                            response2.data.forEach(element => {
+                                ciudades.value.push(element);
+                                if (element.ID == response.data.Comuna.CiudadID) {
+                                    selectedCiudad.value = element;
+                                }
+                            });
+                            axios
+                                .get(api + "/comunas/" + response.data.Comuna.CiudadID)
+                                .then((response3) => {
+                                    response3.data.forEach(element => {
+                                        comunas.value.push(element);
+                                        if (element.ID == response.data.ComunaID) {
+                                            selectedComuna.value = element;
+                                        }
+                                    });
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                });
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
 
-        const crearFerreteriaClicked = () => {
+                    getHoras(response.data.Horarios[0]);
+                })
+                .catch(err => {
+                    if (err.response.status === 404) {
+                        router.push("/ferreterias");
+                    }
+                    console.log(err);
+                });
+        };
+
+        const modificarFerreteriaClicked = () => {
             if (validar()) {
                 confirm.require({
-                    message: 'Crear ferretería "' + nombre.value + '"?',
+                    message: 'Modificar ferretería "' + nombre.value + '"?',
                     header: 'Confirmación',
                     icon: 'pi pi-info-circle',
                     acceptClass: 'p-button-warning',
                     accept: () => {
-                        crearFerreteria();
+                        modificarFerreteria();
                     },
                     reject: () => {
                         console.log("rejected");
@@ -252,10 +302,9 @@ export default {
             return true;
         };
 
-        const openModal = (message, callback = null, id = 0) => {
+        const openModal = (message, callback = null) => {
             modalMessage.value = message;
             dialogCallback.value = callback;
-            savedID.value = id;
             if (callback === null) {
                 dialogTitle.value = "Error";
             }
@@ -267,59 +316,33 @@ export default {
 
         const closeModal = () => {
             displayModal.value = false;
-            if (savedID.value > 0 && dialogCallback.value !== null && typeof dialogCallback.value === 'function') {
-                dialogCallback.value(savedID.value);
+            if (dialogCallback.value !== null && typeof dialogCallback.value === 'function') {
+                dialogCallback.value();
             }
         };
 
-        const crearFerreteria = () => {
+        const modificarFerreteria = () => {
+            let horarios = [];
+            ferreteria.value.Horarios.forEach(element => {
+                horarios.push({
+                    ID: element.ID,
+                    DiaID: element.DiaID,
+                    FerreteriaID: element.FerreteriaID,
+                    AbrirID: selectedAbrir.value.ID,
+                    CerrarID: selectedCerrar.value.ID
+                });
+            });
             axios
-                .post(api + "/ferreteria", {
+                .patch(api + "/ferreteria/" + route.params.id, {
                     Nombre: nombre.value,
                     Descripcion: descripcion.value,
                     Direccion: direccion.value,
                     ComunaID: selectedComuna.value.ID,
-                    Horarios: [
-                        {
-                            DiaId: 1,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 2,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 3,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 4,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 5,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 6,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 7,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                    ]
+                    Horarios: horarios
                 })
                 .then(function (response) {
-                    if (response !== null && response.status === 200) {
-                        openModal("Ferretería creada exitosamente!", redirect, response.data.ID);
+                    if (response !== null && response.status == 200) {
+                        openModal("Ferretería modificada exitosamente!", redirect);
                     }
                     else {
                         console.log(response);
@@ -330,19 +353,24 @@ export default {
                 });
         };
 
-        const redirect = (id) => {
-            router.push("/ferreteria/" + id);
+        const redirect = () => {
+            router.push({name: "Mostrar ferretería"});
         };
 
-        const getHoras = () => {
+        const getHoras = (data) => {
             axios
                 .get(api + "/horas")
                 .then((response) => {
                     response.data.forEach(element => {
                         horas.value.push(element);
+                        if (element.ID === data.AbrirID) {
+                            selectedAbrir.value = element;
+                        }
+
+                        if (element.ID === data.CerrarID) {
+                            selectedCerrar.value = element;
+                        }
                     });
-                    selectedAbrir.value = response.data[0];
-                    selectedCerrar.value = response.data[0];
                 })
                 .catch(err => {
                     console.log(err);
@@ -350,12 +378,15 @@ export default {
         };
 
         const getRegiones = () => {
+            regiones.value = [];
+            selectedRegion.value = null;
             axios
                 .get(api + "/regiones")
                 .then((response) => {
                     response.data.forEach(element => {
                         regiones.value.push(element);
                     });
+                    getFerreteria();
                 })
                 .catch(err => {
                     console.log(err);
@@ -364,15 +395,19 @@ export default {
 
         const regionChanged = () => {
             getCiudades();
+            console.log(selectedRegion.value);
         }
 
-        const getCiudades = () => {
+        const getCiudades = (id) => {
+            if (id === null) {
+                id = selectedRegion.value.ID
+            }
             selectedCiudad.value = null;
             selectedComuna.value = null;
             ciudades.value = [];
             comunas.value = [];
             axios
-                .get(api + "/ciudades/" + selectedRegion.value.ID)
+                .get(api + "/ciudades/" + id)
                 .then((response) => {
                     response.data.forEach(element => {
                         ciudades.value.push(element);
@@ -418,16 +453,17 @@ export default {
             selectedComunaError,
             regionChanged,
             ciudadChanged,
-            crearFerreteriaClicked,
+            modificarFerreteriaClicked,
             getRegiones,
             getCiudades,
             getComunas,
+            getFerreteria,
             regiones,
             ciudades,
             comunas,
             horas,
             horasError,
-            crearFerreteria,
+            modificarFerreteria,
             validar,
             displayModal,
             dialogTitle,

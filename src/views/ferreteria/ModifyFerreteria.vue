@@ -2,22 +2,22 @@
     <CardPanel class="flex justify-content-center sm:col-4 sm:col-offset-4">
         <template #title>
             <div class="flex justify-content-center flex-wrap card-container">
-                <h2>Crear Ferretería</h2>
+                <h2>Modificar Ferretería</h2>
             </div>
         </template>
         <template #content>
-            <CreateFerreteria/>
+            <ModifyFerreteria/>
         </template>
     </CardPanel>
 </template>
 
 <script>
-import CreateFerreteria from '../../components/ferreteria/CreateFerreteria.vue'
+import ModifyFerreteria from '../../components/ferreteria/ModifyFerreteria.vue'
 
 export default {
     name: 'App',
     components: {
-        CreateFerreteria
+        ModifyFerreteria
     }
 }
 </script>
