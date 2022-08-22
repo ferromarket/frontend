@@ -14,7 +14,7 @@
                     <i class="pi pi-search" />
                     <InputText v-model="filters['global'].value" placeholder="Filtrar" />
                 </span>
-                <ButtonComponent @click="createProducto" class="produc" label="Nuevo" icon="pi pi-plus" iconPos="right" />
+                <ButtonComponent @click="createProducto" class="ferro" label="Nuevo" icon="pi pi-plus" iconPos="right" />
             </div>
         </template>
         <DataColumn field="Nombre" header="Nombre" :sortable="true"></DataColumn>
@@ -63,7 +63,7 @@ export default {
                         let producto = {
                             ID: element .ID,
                             Nombre: element.Nombre,
-                            Categoria: element.Nombre,
+                            Categoria: element.Categoria.Nombre,
                         };
                         productos.value.push(producto);
                     });
@@ -73,12 +73,12 @@ export default {
                 });
         };
 
-            const createProducto = () => {
-            router.push({name: "Crear producto"});
+        const createProducto = () => {
+            router.push({name: "Crear Producto"});
             //router.push("/producto/crear");
         };
 
-            const modifyProducto = (producto) => {
+        const modifyProducto = (producto) => {
             router.push("/producto/modificar/" + producto.ID);
         }; 
 
@@ -106,7 +106,7 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
-            producto.value = productos.value.filter(data => data.ID != producto.ID);
+            productos.value = productos.value.filter(data => data.ID != producto.ID);
         };
 
         return {
