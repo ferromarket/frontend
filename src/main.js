@@ -37,6 +37,7 @@ const ModifyFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './vi
 const ListFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ListFerreteria.vue');
 
 const ListProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ListProducto.vue');
+const CreateProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/CreateProducto.vue');
 
 const routes = [
     {
@@ -89,6 +90,15 @@ const routes = [
         name: 'Productos',
         components: {
             default: ListProducto,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/producto/crear',
+        name: 'Crear Producto',
+        components: {
+            default: CreateProducto,
             header: MainNavbar,
             footer: MainFooter
         }
