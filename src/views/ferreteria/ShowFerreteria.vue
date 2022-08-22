@@ -1,7 +1,5 @@
 <template>
-    <div class="sm:col-4 sm:col-offset-4">
-        <ShowFerreteria/>
-    </div>
+    <ShowFerreteria/>
 </template>
 
 <script>

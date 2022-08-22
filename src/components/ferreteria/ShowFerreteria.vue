@@ -1,5 +1,5 @@
 <template>
-    <CardPanel class="flex justify-content-center">
+    <CardPanel class="flex justify-content-center sm:col-4 sm:col-offset-4">
         <template #title>
             <div class="flex justify-content-center flex-wrap card-container">
                 <h2>{{ ferreteria.Nombre }}</h2>
