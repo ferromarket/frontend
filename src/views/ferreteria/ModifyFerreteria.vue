@@ -1,16 +1,14 @@
 <template>
-    <div class="sm:col-4 sm:col-offset-4">
-        <CardPanel class="flex justify-content-center">
-            <template #title>
-                <div class="flex justify-content-center flex-wrap card-container">
-                    <h2>Modificar Ferretería</h2>
-                </div>
-            </template>
-            <template #content>
-                <ModifyFerreteria/>
-            </template>
-        </CardPanel>
-    </div>
+    <CardPanel class="flex justify-content-center sm:col-4 sm:col-offset-4">
+        <template #title>
+            <div class="flex justify-content-center flex-wrap card-container">
+                <h2>Modificar Ferretería</h2>
+            </div>
+        </template>
+        <template #content>
+            <ModifyFerreteria/>
+        </template>
+    </CardPanel>
 </template>
 
 <script>
