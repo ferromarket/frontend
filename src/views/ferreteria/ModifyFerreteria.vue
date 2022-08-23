@@ -13,8 +13,12 @@
 
 <script>
 import ModifyFerreteria from '../../components/ferreteria/ModifyFerreteria.vue'
+import auth from '../../utils/auth.js';
 
 export default {
+    setup() {
+        auth.checkToken();
+    },
     name: 'App',
     components: {
         ModifyFerreteria

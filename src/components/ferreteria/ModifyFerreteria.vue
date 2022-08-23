@@ -437,7 +437,8 @@ export default {
                 });
         };
 
-        return { nombre,
+        return {
+            nombre,
             nombreError,
             direccion,
             direccionError,
