@@ -20,6 +20,12 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import Dialog from 'primevue/dialog';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Image from 'primevue/image';
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+import Calendar from 'primevue/calendar';
+import InputMask from 'primevue/inputmask';
+import Password from 'primevue/password';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -35,6 +41,11 @@ const IndexView = () => import(/* webpackChunkName: "index_view" */ './views/Ind
 const CreateFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/CreateFerreteria.vue');
 const ModifyFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ModifyFerreteria.vue');
 const ListFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ListFerreteria.vue');
+
+// Repartidor
+
+const PerfilRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/PerfilRepartidor.vue');
+const CreateRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/CreateRepartidor.vue');
 
 const routes = [
     {
@@ -78,6 +89,24 @@ const routes = [
         name: 'Modificar ferretería',
         components: {
             default: ModifyFerreteria,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/repartidor',
+        name: 'Repartidor',
+        components: {
+            default: PerfilRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/repartidor/crear',
+        name: 'crear repartidor',
+        components: {
+            default: CreateRepartidor,
             header: MainNavbar,
             footer: MainFooter
         }
@@ -148,6 +177,12 @@ app.component('ConfirmDialog', ConfirmDialog);
 app.component('DialogBox', Dialog);
 app.component('DataTable', DataTable);
 app.component('DataColumn', Column);
+app.component('ImaGen', Image);
+app.component('AccorDion', Accordion);
+app.component('AccordionTab', AccordionTab);
+app.component('CalenDar', Calendar);
+app.component('InputMask', InputMask);
+app.component('PassWord', Password);
 
 app.use(router);
 
