@@ -306,7 +306,6 @@ app.component('ImaGen', Image);
 app.component('AccorDion', Accordion);
 app.component('AccordionTab', AccordionTab);
 app.component('CalenDar', Calendar);
-app.component('InputMask', InputMask);
 app.component('PassWord', Password);
 
 app.use(router);
