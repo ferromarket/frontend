@@ -2,7 +2,7 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 var auth = {
-    checkToken (redirect = true) {
+    checkToken (redirect = true, callback = null) {
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
@@ -25,20 +25,30 @@ var auth = {
             .then((response) => {
                 if (response.data.status !== "authorized") {
                     console.log(response.data);
-                    return false;
+                    if (callback !== null) {
+                        callback(false);
+                    }
                 }
                 else {
                     // No hace nada... el usuario es autenticado
-                    return true;
+                    if (callback !== null) {
+                        callback(true);
+                    }
                 }
             })
             .catch((err) => {
-                console.log(err);
-                if (redirect === true) {
-                    router.replace("/");
-                }
-                else {
-                    return false;
+                if (err || !err) {
+                    if (redirect === true) {
+                        if (callback !== null) {
+                            callback(false);
+                        }
+                        router.replace("/");
+                    }
+                    else {
+                        if (callback !== null) {
+                            callback(false);
+                        }
+                    }
                 }
             });
     }

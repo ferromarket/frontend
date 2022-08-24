@@ -58,6 +58,10 @@ export default {
                             }
                         ]*/
                     },
+                    {
+                        label: 'Repartidores',
+                        to: '/repartidor/Listado',
+                    }
                 ]
             }
         ]);
