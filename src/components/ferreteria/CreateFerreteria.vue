@@ -136,6 +136,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
+import auth from "../../utils/auth";
 
 export default {
     setup() {
@@ -263,48 +264,48 @@ export default {
         const crearFerreteria = () => {
             axios
                 .post(api + "/ferreteria", {
-                Nombre: nombre.value,
-                Descripcion: descripcion.value,
-                Direccion: direccion.value,
-                ComunaID: selectedComuna.value.ID,
-                Horarios: [
-                    {
-                        DiaId: 1,
-                        AbrirID: selectedAbrir.value.ID,
-                        CerrarID: selectedCerrar.value.ID
-                    },
-                    {
-                        DiaId: 2,
-                        AbrirID: selectedAbrir.value.ID,
-                        CerrarID: selectedCerrar.value.ID
-                    },
-                    {
-                        DiaId: 3,
-                        AbrirID: selectedAbrir.value.ID,
-                        CerrarID: selectedCerrar.value.ID
-                    },
-                    {
-                        DiaId: 4,
-                        AbrirID: selectedAbrir.value.ID,
-                        CerrarID: selectedCerrar.value.ID
-                    },
-                    {
-                        DiaId: 5,
-                        AbrirID: selectedAbrir.value.ID,
-                        CerrarID: selectedCerrar.value.ID
-                    },
-                    {
-                        DiaId: 6,
-                        AbrirID: selectedAbrir.value.ID,
-                        CerrarID: selectedCerrar.value.ID
-                    },
-                    {
-                        DiaId: 7,
-                        AbrirID: selectedAbrir.value.ID,
-                        CerrarID: selectedCerrar.value.ID
-                    },
-                ]
-            })
+                    Nombre: nombre.value,
+                    Descripcion: descripcion.value,
+                    Direccion: direccion.value,
+                    ComunaID: selectedComuna.value.ID,
+                    Horarios: [
+                        {
+                            DiaId: 1,
+                            AbrirID: selectedAbrir.value.ID,
+                            CerrarID: selectedCerrar.value.ID
+                        },
+                        {
+                            DiaId: 2,
+                            AbrirID: selectedAbrir.value.ID,
+                            CerrarID: selectedCerrar.value.ID
+                        },
+                        {
+                            DiaId: 3,
+                            AbrirID: selectedAbrir.value.ID,
+                            CerrarID: selectedCerrar.value.ID
+                        },
+                        {
+                            DiaId: 4,
+                            AbrirID: selectedAbrir.value.ID,
+                            CerrarID: selectedCerrar.value.ID
+                        },
+                        {
+                            DiaId: 5,
+                            AbrirID: selectedAbrir.value.ID,
+                            CerrarID: selectedCerrar.value.ID
+                        },
+                        {
+                            DiaId: 6,
+                            AbrirID: selectedAbrir.value.ID,
+                            CerrarID: selectedCerrar.value.ID
+                        },
+                        {
+                            DiaId: 7,
+                            AbrirID: selectedAbrir.value.ID,
+                            CerrarID: selectedCerrar.value.ID
+                        },
+                    ]
+                }, auth.getTokenHeader())
                 .then(function (response) {
                 if (response !== null && response.status === 200) {
                     openModal("Ferretería creada exitosamente!", redirect, response.data.ID);

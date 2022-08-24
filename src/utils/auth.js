@@ -2,20 +2,26 @@ import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 var auth = {
+    getTokenHeader () {
+        const token = localStorage.getItem('FERROMARKET_TOKEN');
+
+        var config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        return config;
+    },
     checkToken (redirect = true, callback = null) {
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
 
-        const token = localStorage.getItem('FERROMARKET_TOKEN');
-
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
+        const config = this.getTokenHeader();
 
         const bodyParameters = {
             key: "value"
         };
+
         const router = useRouter();
         axios
             .post(api + "/auth",
