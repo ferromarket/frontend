@@ -33,11 +33,11 @@
                 <label for="categoria">Categoría</label>
             </span>
         </div>   
-        <!-- Ingreso de data --> 
+        <!-- Ingreso de data -->
         <div class="field col-6">
             <span class="p-float-label">
-                <InputText id="valor" type="text" v-model="valor" v-bind:class="{ 'p-invalid': valorError }" />
-                <label for="valor">Nombre espeficación</label>
+                <InputText id="data" type="text" v-model="data" v-bind:class="{ 'p-invalid': dataError }" />
+                <label for="data">Nombre espeficación</label>
             </span>
         </div>   
         <div class="field col-6">
@@ -45,7 +45,7 @@
                 <InputText id="valor2" type="text" v-model="valor2" v-bind:class="{ 'p-invalid': valor2Error }" />
                 <label for="valor2">Data</label>
             </span>
-        </div>   
+        </div>    
         <div class="field col-12 sm:col-2">
             <ButtonComponent @click="crearProductoClicked" class="ferro" label="Crear" icon="pi pi-check" iconPos="right" />
         </div>
@@ -61,6 +61,7 @@ export default {
     setup() {
         onMounted(() => {
             getCategorias();
+
         });
 
         // si el puerto es 8080, no es con proxy
@@ -124,7 +125,7 @@ export default {
             axios
                 .post(api + "/producto", {
                     Nombre: nombre.value,
-                    CategoriaID: selectedCategoria.value.ID,
+                    CategoriaID: selectedCategoria.value.ID
                 })
                 .then(function (response) {
                     if (response !== null && response.status != 204) {
