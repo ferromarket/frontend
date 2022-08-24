@@ -93,11 +93,11 @@ export default {
 
         const createUsuario = () => {
             router.push({name: "Crear Usuario Registrado"});
-            //router.push("/usuario/crear");
+            //router.push("/usuarios/crear");
         };
 
         const modifyUsuario = (usuario) => {
-            router.push("/usuario/modificar/" + usuario.ID);
+            router.push("/usuarios/modificar/" + usuario.ID);
         };
 
         const confirmDeleteUsuario = (usuario) => {
@@ -117,7 +117,7 @@ export default {
 
         const deleteUsuario = (usuario) => {
             axios
-                .delete(api + "/usuario/" + usuario.ID)
+                .delete(api + "/usuarios/" + usuario.ID)
                 .then((response) => {
                     console.log(response);
                 })
