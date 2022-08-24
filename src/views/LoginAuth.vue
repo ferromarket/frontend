@@ -2,26 +2,22 @@
     <CardPanel class="flex justify-content-center sm:col-4 sm:col-offset-4">
         <template #title>
             <div class="flex justify-content-center flex-wrap card-container">
-                <h2>Modificar Ferretería</h2>
+                <h2>Ingresar</h2>
             </div>
         </template>
         <template #content>
-            <ModifyFerreteria/>
+            <LoginAuth/>
         </template>
     </CardPanel>
 </template>
 
 <script>
-import ModifyFerreteria from '../../components/ferreteria/ModifyFerreteria.vue'
-import auth from '../../utils/auth.js';
+import LoginAuth from '../components/LoginAuth.vue'
 
 export default {
-    setup() {
-        auth.checkToken();
-    },
     name: 'App',
     components: {
-        ModifyFerreteria
+        LoginAuth
     }
 }
 </script>

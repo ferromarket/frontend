@@ -1,9 +1,9 @@
 <template>
     <ConfirmDialog/>
-    <DialogBox header="Error" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '25vw'}" :modal="true">
-        <p class="m-0">{{modalMessage}}</p>
+    <DialogBox v-bind:header="dialogTitle" v-model:visible="displayModal" :closable="false" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '25vw'}" :modal="true">
+        <p class="m-0">{{ modalMessage }}</p>
         <template #footer>
-            <ButtonComponent label="Cerrar" icon="pi pi-check" @click="closeModal" class="p-button-danger" autofocus />
+            <ButtonComponent label="Cerrar" icon="pi pi-check" @click="closeModal" v-bind:class="{ 'p-button-danger': error }" autofocus />
         </template>
     </DialogBox>
     <div class="w-full justify-content-center p-fluid grid">
@@ -133,6 +133,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
 
@@ -142,15 +143,15 @@ export default {
             getRegiones();
             getHoras();
         });
-
+        const router = useRouter();
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
-
         const confirm = useConfirm();
         const displayModal = ref(false);
         const modalMessage = ref("");
-
+        const dialogCallback = ref();
+        const dialogTitle = ref("Error");
         const nombre = ref("");
         const direccion = ref("");
         const selectedRegion = ref();
@@ -163,7 +164,6 @@ export default {
         const ciudades = ref([]);
         const comunas = ref([]);
         const horas = ref([]);
-
         const nombreError = ref(false);
         const selectedRegionError = ref(false);
         const selectedCiudadError = ref(false);
@@ -171,14 +171,15 @@ export default {
         const direccionError = ref(false);
         const descripcionError = ref(false);
         const horasError = ref(false);
-
+        const error = ref(false);
+        const savedID = ref(0);
         const crearFerreteriaClicked = () => {
             if (validar()) {
                 confirm.require({
-                    message: 'Crear ferretería "' + nombre.value + '"?',
-                    header: 'Confirmación',
-                    icon: 'pi pi-info-circle',
-                    acceptClass: 'p-button-warning',
+                    message: "Crear ferretería \"" + nombre.value + "\"?",
+                    header: "Confirmación",
+                    icon: "pi pi-info-circle",
+                    acceptClass: "p-button-warning",
                     accept: () => {
                         crearFerreteria();
                     },
@@ -188,7 +189,6 @@ export default {
                 });
             }
         };
-
         const validar = () => {
             nombreError.value = false;
             selectedRegionError.value = false;
@@ -197,140 +197,158 @@ export default {
             direccionError.value = false;
             descripcionError.value = false;
             horasError.value = false;
+            error.value = false;
             if (nombre.value.trim() === "") {
                 nombreError.value = true;
+                error.value = true;
                 openModal("Falta nombre de la ferretería!");
                 return false;
             }
             if (selectedRegion.value === null) {
                 selectedRegionError.value = true;
+                error.value = true;
                 openModal("Falta seleccionar una región!");
                 return false;
             }
             if (selectedCiudad.value === null) {
                 selectedCiudadError.value = true;
+                error.value = true;
                 openModal("Falta seleccionar una ciudad!");
                 return false;
             }
             if (selectedComuna.value === null) {
                 selectedComunaError.value = true;
+                error.value = true;
                 openModal("Falta seleccionar una comuna!");
                 return false;
             }
             if (direccion.value.trim() === "") {
                 direccionError.value = true;
+                error.value = true;
                 openModal("Falta dirección de la ferretería!");
                 return false;
             }
             if (descripcion.value.trim() === "") {
                 descripcionError.value = true;
+                error.value = true;
                 openModal("Falta descripción de la ferretería!");
                 return false;
             }
             if (selectedAbrir.value.ID >= selectedCerrar.value.ID) {
                 horasError.value = true;
+                error.value = true;
                 openModal("La hora de abrir tiene que ser antes de cerrar!");
                 return false;
             }
             return true;
         };
-
-        const openModal = (message) => {
+        const openModal = (message, callback = null, id = 0) => {
             modalMessage.value = message;
+            dialogCallback.value = callback;
+            savedID.value = id;
+            if (callback === null) {
+                dialogTitle.value = "Error";
+            }
+            else {
+                dialogTitle.value = "Éxito";
+            }
             displayModal.value = true;
         };
-
         const closeModal = () => {
             displayModal.value = false;
+            if (savedID.value > 0 && dialogCallback.value !== null && typeof dialogCallback.value === "function") {
+                dialogCallback.value(savedID.value);
+            }
         };
-
         const crearFerreteria = () => {
             axios
                 .post(api + "/ferreteria", {
-                    Nombre: nombre.value,
-                    Descripcion: descripcion.value,
-                    Direccion: direccion.value,
-                    ComunaID: selectedComuna.value.ID,
-                    Horarios: [
-                        {
-                            DiaId: 1,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 2,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 3,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 4,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 5,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 6,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                        {
-                            DiaId: 7,
-                            AbrirID: selectedAbrir.value.ID,
-                            CerrarID: selectedCerrar.value.ID
-                        },
-                    ]
-                })
+                Nombre: nombre.value,
+                Descripcion: descripcion.value,
+                Direccion: direccion.value,
+                ComunaID: selectedComuna.value.ID,
+                Horarios: [
+                    {
+                        DiaId: 1,
+                        AbrirID: selectedAbrir.value.ID,
+                        CerrarID: selectedCerrar.value.ID
+                    },
+                    {
+                        DiaId: 2,
+                        AbrirID: selectedAbrir.value.ID,
+                        CerrarID: selectedCerrar.value.ID
+                    },
+                    {
+                        DiaId: 3,
+                        AbrirID: selectedAbrir.value.ID,
+                        CerrarID: selectedCerrar.value.ID
+                    },
+                    {
+                        DiaId: 4,
+                        AbrirID: selectedAbrir.value.ID,
+                        CerrarID: selectedCerrar.value.ID
+                    },
+                    {
+                        DiaId: 5,
+                        AbrirID: selectedAbrir.value.ID,
+                        CerrarID: selectedCerrar.value.ID
+                    },
+                    {
+                        DiaId: 6,
+                        AbrirID: selectedAbrir.value.ID,
+                        CerrarID: selectedCerrar.value.ID
+                    },
+                    {
+                        DiaId: 7,
+                        AbrirID: selectedAbrir.value.ID,
+                        CerrarID: selectedCerrar.value.ID
+                    },
+                ]
+            })
                 .then(function (response) {
-                    if (response !== null && response.status != 204) {
-                        console.log(response);
-                    }
-                })
+                if (response !== null && response.status === 200) {
+                    openModal("Ferretería creada exitosamente!", redirect, response.data.ID);
+                }
+                else {
+                    console.log(response);
+                }
+            })
                 .catch(function (error) {
-                    console.log(error);
-                });
+                console.log(error);
+            });
         };
-
+        const redirect = (id) => {
+            router.push("/ferreteria/" + id);
+        };
         const getHoras = () => {
             axios
                 .get(api + "/horas")
                 .then((response) => {
-                    response.data.forEach(element => {
-                        horas.value.push(element);
-                    });
-                    selectedAbrir.value = response.data[0];
-                    selectedCerrar.value = response.data[0];
-                })
-                .catch(err => {
-                    console.log(err);
+                response.data.forEach(element => {
+                    horas.value.push(element);
                 });
+                selectedAbrir.value = response.data[0];
+                selectedCerrar.value = response.data[0];
+            })
+                .catch(err => {
+                console.log(err);
+            });
         };
-
         const getRegiones = () => {
             axios
                 .get(api + "/regiones")
                 .then((response) => {
-                    response.data.forEach(element => {
-                        regiones.value.push(element);
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
+                response.data.forEach(element => {
+                    regiones.value.push(element);
                 });
+            })
+                .catch(err => {
+                console.log(err);
+            });
         };
-
         const regionChanged = () => {
             getCiudades();
-        }
-
+        };
         const getCiudades = () => {
             selectedCiudad.value = null;
             selectedComuna.value = null;
@@ -339,66 +357,32 @@ export default {
             axios
                 .get(api + "/ciudades/" + selectedRegion.value.ID)
                 .then((response) => {
-                    response.data.forEach(element => {
-                        ciudades.value.push(element);
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
+                response.data.forEach(element => {
+                    ciudades.value.push(element);
                 });
+            })
+                .catch(err => {
+                console.log(err);
+            });
         };
-
         const ciudadChanged = () => {
             getComunas();
-        }
-
+        };
         const getComunas = () => {
             selectedComuna.value = null;
             comunas.value = [];
             axios
                 .get(api + "/comunas/" + selectedCiudad.value.ID)
                 .then((response) => {
-                    response.data.forEach(element => {
-                        comunas.value.push(element);
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
+                response.data.forEach(element => {
+                    comunas.value.push(element);
                 });
+            })
+                .catch(err => {
+                console.log(err);
+            });
         };
-
-        return { nombre,
-            nombreError,
-            direccion,
-            direccionError,
-            descripcion,
-            descripcionError,
-            selectedAbrir,
-            selectedCerrar,
-            selectedRegion,
-            selectedRegionError,
-            selectedCiudad,
-            selectedCiudadError,
-            selectedComuna,
-            selectedComunaError,
-            regionChanged,
-            ciudadChanged,
-            crearFerreteriaClicked,
-            getRegiones,
-            getCiudades,
-            getComunas,
-            regiones,
-            ciudades,
-            comunas,
-            horas,
-            horasError,
-            crearFerreteria,
-            validar,
-            displayModal,
-            modalMessage,
-            openModal,
-            closeModal
-        };
+        return { nombre, nombreError, direccion, direccionError, descripcion, descripcionError, selectedAbrir, selectedCerrar, selectedRegion, selectedRegionError, selectedCiudad, selectedCiudadError, selectedComuna, selectedComunaError, regionChanged, ciudadChanged, crearFerreteriaClicked, getRegiones, getCiudades, getComunas, regiones, ciudades, comunas, horas, horasError, crearFerreteria, validar, displayModal, dialogTitle, modalMessage, openModal, closeModal, error };
     }
 };
 </script>

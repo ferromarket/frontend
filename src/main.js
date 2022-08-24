@@ -20,21 +20,24 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import Dialog from 'primevue/dialog';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Password from 'primevue/password';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
 // route level code-splitting
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
-const MainNavbar = () => import(/* webpackChunkName: "navbar" */ './layouts/MainNavbar.vue');
+const MainNavbar = () => import(/* webpackChunkName: "ferromarket" */ './layouts/MainNavbar.vue');
+const MainFooter = () => import(/* webpackChunkName: "ferromarket" */ './layouts/MainFooter.vue');
 
-const MainFooter = () => import(/* webpackChunkName: "footer" */ './layouts/MainFooter.vue');
+const LoginAuth = () => import(/* webpackChunkName: "login" */ './views/LoginAuth.vue');
 
 const IndexView = () => import(/* webpackChunkName: "index_view" */ './views/IndexView.vue');
 
 const CreateFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/CreateFerreteria.vue');
 const ModifyFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ModifyFerreteria.vue');
 const ListFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ListFerreteria.vue');
+const ShowFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ShowFerreteria.vue');
 
 const ListProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ListProducto.vue');
 const CreateProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/CreateProducto.vue');
@@ -61,10 +64,28 @@ const routes = [
         }
     },
     {
-        path: '/ferreteria',
+        path: '/ingresar',
+        name: 'Ingresar',
+        components: {
+            default: LoginAuth,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/ferreterias',
         name: 'Ferreterías',
         components: {
             default: ListFerreteria,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/ferreteria/:id',
+        name: 'Mostrar ferretería',
+        components: {
+            default: ShowFerreteria,
             header: MainNavbar,
             footer: MainFooter
         }
@@ -180,11 +201,12 @@ app.component('ConfirmDialog', ConfirmDialog);
 app.component('DialogBox', Dialog);
 app.component('DataTable', DataTable);
 app.component('DataColumn', Column);
+app.component('PasswordInput', Password);
 
 app.use(router);
 
-app.config.globalProperties.axios=axios
+app.config.globalProperties.axios = axios;
 
 app.mount('#app');
 
-export default router
+export default router;

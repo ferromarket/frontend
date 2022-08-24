@@ -19,7 +19,7 @@ export default {
                     {
                         label: 'Ferreterías',
                         //icon: 'pi pi-fw pi-plus',
-                        to: '/ferreteria',
+                        to: '/ferreterias',
                         /*items: [
                             {
                                 label: 'Crear',
