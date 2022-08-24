@@ -16,7 +16,7 @@
                     <i class="pi pi-search" />
                     <InputText v-model="filters['global'].value" placeholder="Filtrar" />
                 </span>
-                <ButtonComponent @click="createFerreteria" class="ferro" label="Nuevo" icon="pi pi-plus" iconPos="right" />
+                <ButtonComponent @click="createFerreteria" v-if="authenticated === true" class="ferro" label="Nuevo" icon="pi pi-plus" iconPos="right" />
             </div>
         </template>
         <DataColumn field="Nombre" header="Nombre" :sortable="true"></DataColumn>
@@ -26,7 +26,7 @@
         <DataColumn field="Direccion" header="Dirección" :sortable="true"></DataColumn>
         <DataColumn field="Abrir" header="Abrir" :sortable="true"></DataColumn>
         <DataColumn field="Cerrar" header="Cerrar" :sortable="true"></DataColumn>
-        <DataColumn style="min-width:8rem">
+        <DataColumn v-if="authenticated === true" style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyFerreteria(slotProps.data)" />
                 <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteFerreteria(slotProps.data)" />
@@ -41,10 +41,12 @@ import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
 import { useConfirm } from "primevue/useconfirm";
 import axios from 'axios';
+import auth from '../../utils/auth';
 
 export default {
     setup() {
         onMounted(() => {
+            checkAuth();
             getFerreterias();
         });
 
@@ -58,9 +60,19 @@ export default {
 
         const ferreterias = ref([]);
 
+        const authenticated = ref(false);
+
         const filters = ref({
             'global': { value: null, matchMode: FilterMatchMode.CONTAINS }
         });
+
+        const checkAuth = () => {
+            authenticated.value = auth.checkToken(false, checkAuthCallback);
+        };
+
+        const checkAuthCallback = (result) => {
+            authenticated.value = result;
+        };
 
         const rowSelected = (event) => {
             router.push("/ferreteria/" + event.data.ID);
@@ -133,7 +145,8 @@ export default {
             deleteFerreteria,
             ferreterias,
             filters,
-            rowSelected
+            rowSelected,
+            authenticated: authenticated
         };
     }
 };
