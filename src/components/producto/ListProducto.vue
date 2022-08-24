@@ -19,10 +19,15 @@
         </template>
         <DataColumn field="Nombre" header="Nombre" :sortable="true"></DataColumn>
         <DataColumn field="Categoria" header="Categoria" :sortable="true"></DataColumn>
+        <DataColumn field="EspecifacionNombre" header="Marca" :sortable="true"></DataColumn>
+        <DataColumn field="EspecifacionData" header="Detalle" :sortable="true"></DataColumn>
+
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyProducto(slotProps.data)" />
-                <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProducto(slotProps.data)" />
+                <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProducto(slotProps.data)" />
+                <ButtonComponent icon="pi pi-eye" class="p-button-rounded p-button-info " @click="showProducto(slotProps.data)" />
+
             </template>
         </DataColumn>
     </DataTable>
@@ -61,7 +66,7 @@ export default {
                 .then((response) => {
                     response.data.forEach(element => {
                         let producto = {
-                            ID: element .ID,
+                            ID: element.ID,
                             Nombre: element.Nombre,
                             Categoria: element.Categoria.Nombre,
                         };
@@ -84,7 +89,7 @@ export default {
 
         const confirmDeleteProducto = (producto) => {
             confirm.require({
-                message: 'Estás seguro que quieres eliminar el producto "' + producto.Nombre + '"?',
+                message: 'Estás seguro que quieres eliminar "' + producto.Nombre + '" de la lista?',
                 header: 'Confirmación',
                 icon: 'pi pi-exclamation-triangle',
                 acceptClass: 'p-button-danger',

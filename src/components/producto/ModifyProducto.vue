@@ -33,7 +33,7 @@
                 <label for="categoria">Categoría</label>
             </span>
         <div class="field col-12 sm:col-3">
-            <ButtonComponent @click="modificarProductoClicked" class="ferro" label="Modificar" icon="pi pi-check" iconPos="right" />
+            <ButtonComponent @click="modificarProductoClicked" class="ferro" label="Modificar categoria" icon="pi pi-check" iconPos="right" />
         </div>
     </div>                    
 </template>

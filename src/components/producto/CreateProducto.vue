@@ -33,19 +33,19 @@
                 <label for="categoria">Categoría</label>
             </span>
         </div>   
-        <!-- Ingreso de data --> 
+        <!-- Ingreso de data -->
+        <div class="field col-6">
+            <span class="p-float-label">
+                <InputText id="espnombre" type="text" v-model="espnombre" v-bind:class="{ 'p-invalid': espnombreError }" />
+                <label for="espnombre">Nombre especificación</label>
+            </span>
+        </div>   
         <div class="field col-6">
             <span class="p-float-label">
                 <InputText id="valor" type="text" v-model="valor" v-bind:class="{ 'p-invalid': valorError }" />
-                <label for="valor">Nombre espeficación</label>
+                <label for="valor">Data</label>
             </span>
-        </div>   
-        <div class="field col-6">
-            <span class="p-float-label">
-                <InputText id="valor2" type="text" v-model="valor2" v-bind:class="{ 'p-invalid': valor2Error }" />
-                <label for="valor2">Data</label>
-            </span>
-        </div>   
+        </div>    
         <div class="field col-12 sm:col-2">
             <ButtonComponent @click="crearProductoClicked" class="ferro" label="Crear" icon="pi pi-check" iconPos="right" />
         </div>
@@ -61,6 +61,7 @@ export default {
     setup() {
         onMounted(() => {
             getCategorias();
+
         });
 
         // si el puerto es 8080, no es con proxy
@@ -74,6 +75,8 @@ export default {
         const nombre = ref("");
         const selectedCategoria = ref();
         const categorias = ref([]);
+        //const espnombre = ref("");
+        //const valor = ref("");
 
         const nombreError = ref(false);
         const selectedCategoriaError = ref(false);
@@ -100,12 +103,12 @@ export default {
             selectedCategoriaError.value = false;
             if (nombre.value.trim() === "") {
                 nombreError.value = true;
-                openModal("Falta nombre de producto!");
+                openModal("Falta nombre de producto");
                 return false;
             }
             if (selectedCategoria.value === null) {
                 selectedCategoriaError.value = true;
-                openModal("Falta seleccionar una categoria!");
+                openModal("Falta seleccionar una categoria");
                 return false;
             }
             return true;
@@ -125,6 +128,8 @@ export default {
                 .post(api + "/producto", {
                     Nombre: nombre.value,
                     CategoriaID: selectedCategoria.value.ID,
+                   // EspecificacionNombre: EspecificacionNombre.Nombre.value,
+                  //  EspecificacionData: EspecificacionData.Valor.value,
                 })
                 .then(function (response) {
                     if (response !== null && response.status != 204) {
