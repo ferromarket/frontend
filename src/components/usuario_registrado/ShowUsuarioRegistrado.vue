@@ -2,7 +2,7 @@
     <CardPanel class="flex justify-content-center sm:col-4 sm:col-offset-4">
         <template #title>
             <div class="flex justify-content-center flex-wrap card-container">
-                <h2>{{ usuario.Nombre }}</h2>
+                <h2>{{ usuario.Nombres }}</h2>
             </div>
         </template>
         <template #content>
@@ -34,19 +34,27 @@ export default {
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
 
         const usuario = ref({
-            Nombre: "",
+            ID: "",
+            Nombres: "",
             Direccion: "",
+            RUT: "",
+            Contrasena:"",
+            Email: "",
+            ApellidoPaterno: "",
+            ApellidoMaterno: "",
+            Telefono: "",
+            FechaNacimiento: ""
         });
 
         const getUsuario = () => {
             axios
-                .get(api + "/usuario/" + route.params.id)
+                .get(api + "/usuarios/" + route.params.id)
                 .then((response) => {
                     usuario.value = response.data;
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        router.push("/usuario");
+                        router.push("/usuarios");
                     }
                     console.log(err);
                 });

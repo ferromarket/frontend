@@ -21,6 +21,7 @@ import Dialog from 'primevue/dialog';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Password from 'primevue/password';
+import InputMask from 'primevue/inputmask';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
@@ -241,6 +242,7 @@ app.component('ConfirmDialog', ConfirmDialog);
 app.component('DialogBox', Dialog);
 app.component('DataTable', DataTable);
 app.component('DataColumn', Column);
+app.component('InputMask', InputMask);
 app.component('PasswordInput', Password);
 
 app.use(router);

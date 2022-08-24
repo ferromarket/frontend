@@ -9,7 +9,7 @@
             :rowsPerPageOptions="[10,20,50]"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
             filterDisplay="menu"
-            :globalFilterFields="['Nombre', 'Direccion']">
+            :globalFilterFields="['Nombres', 'Apellido Paterno', 'Apellido Materno', 'RUT', 'Telefono', 'Direccion' , 'Fecha Nacimiento', 'E-mail']">
         <template #header>
             <div class="flex justify-content-between">
                 <span class="p-input-icon-left">
@@ -19,8 +19,14 @@
                 <ButtonComponent @click="createUsuario" class="ferro" label="Nuevo" icon="pi pi-plus" iconPos="right" />
             </div>
         </template>
-        <DataColumn field="Nombre" header="Nombre" :sortable="true"></DataColumn>
+        <DataColumn field="Nombres" header="Nombres" :sortable="true"></DataColumn>
+        <DataColumn field="ApellidoPaterno" header="Apellido Paterno" :sortable="true"></DataColumn>
+        <DataColumn field="ApellidoMaterno" header="Apellido Materno" :sortable="true"></DataColumn>
+        <DataColumn field="RUT" header="RUT" :sortable="true"></DataColumn>
+        <DataColumn field="Telefono" header="Telefono" :sortable="true"></DataColumn>
         <DataColumn field="Direccion" header="Dirección" :sortable="true"></DataColumn>
+        <DataColumn field="FechaNacimiento" header="Fecha Nacimiento" :sortable="true"></DataColumn>
+        <DataColumn field="E-mail" header="E-mail" :sortable="true"></DataColumn>
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyUsuario(slotProps.data)" />
@@ -58,17 +64,23 @@ export default {
         });
 
         const rowSelected = (event) => {
-            router.push("/usuario/" + event.data.ID);
+            router.push("/usuarios/" + event.data.ID);
         };
 
         const getUsuarios = () => {
             axios
-                .get(api + "/usuario")
+                .get(api + "/usuarios")
                 .then((response) => {
                     response.data.forEach(element => {
                         let usuario = {
                             ID: element.ID,
-                            Nombre: element.Nombre,
+                            Nombres: element.Nombres,
+                            ApellidoPaterno: element.ApellidoPaterno,
+                            ApellidoMaterno: element.ApellidoMaterno,
+                            RUT:element.RUT,
+                            Telefono: element.Telefono,
+                            FechaNacimiento: element.FechaNacimiento,
+                            Email:element.Email,
                             Direccion: element.Direccion
                         };
                         usuarios.value.push(usuario);
