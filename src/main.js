@@ -26,7 +26,6 @@ import AccordionTab from 'primevue/accordiontab';
 import Calendar from 'primevue/calendar';
 import InputMask from 'primevue/inputmask';
 import Password from 'primevue/password';
-import InputMask from 'primevue/inputmask';
 
 import { createRouter, createWebHistory } from 'vue-router';
 
