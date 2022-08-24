@@ -39,6 +39,11 @@ const ModifyFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './vi
 const ListFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ListFerreteria.vue');
 const ShowFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ShowFerreteria.vue');
 
+const ListProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ListProducto.vue');
+const CreateProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/CreateProducto.vue');
+const ModifyProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ModifyProducto.vue');
+
+
 const routes = [
     {
         path: '/:pathMatch(.*)*',
@@ -99,6 +104,33 @@ const routes = [
         name: 'Modificar ferretería',
         components: {
             default: ModifyFerreteria,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/producto',
+        name: 'Productos',
+        components: {
+            default: ListProducto,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/producto/crear',
+        name: 'Crear Producto',
+        components: {
+            default: CreateProducto,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/producto/modificar/:id',
+        name: 'Modificar producto',
+        components: {
+            default: ModifyProducto,
             header: MainNavbar,
             footer: MainFooter
         }
