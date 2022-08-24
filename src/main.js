@@ -20,6 +20,11 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import Dialog from 'primevue/dialog';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Image from 'primevue/image';
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+import Calendar from 'primevue/calendar';
+import InputMask from 'primevue/inputmask';
 import Password from 'primevue/password';
 
 import { createRouter, createWebHistory } from 'vue-router';
@@ -39,10 +44,22 @@ const ModifyFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './vi
 const ListFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ListFerreteria.vue');
 const ShowFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './views/ferreteria/ShowFerreteria.vue');
 
+// Repartidor
+
+const PerfilRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/PerfilRepartidor.vue');
+const CreateRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/CreateRepartidor.vue');
+const ListRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/ListRepartidor.vue');
+const EditarRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/EditarRepartidor.vue');
+
 const ListProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ListProducto.vue');
 const CreateProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/CreateProducto.vue');
 const ModifyProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ModifyProducto.vue');
+const ShowProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ShowProducto.vue');
 
+const CreateUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/CreateUsuarioRegistrado.vue');
+const ModifyUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ModifyUsuarioRegistrado.vue');
+const ListUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ListUsuarioRegistrado.vue');
+const ShowUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ShowUsuarioRegistrado.vue');
 
 const routes = [
     {
@@ -109,10 +126,55 @@ const routes = [
         }
     },
     {
+        path: '/repartidor/:id',
+        name: 'Repartidor',
+        components: {
+            default: PerfilRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/repartidor/crear',
+        name: 'Registrar Repartidor',
+        components: {
+            default: CreateRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/repartidor/Listado',
+        name: 'Listado de Repartidores',
+        components: {
+            default: ListRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/repartidor/Editar/:id',
+        name: 'Editar Repartidor',
+        components: {
+            default: EditarRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
         path: '/producto',
         name: 'Productos',
         components: {
             default: ListProducto,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/producto/:id',
+        name: 'Mostrar producto',
+        components: {
+            default: ShowProducto,
             header: MainNavbar,
             footer: MainFooter
         }
@@ -131,6 +193,42 @@ const routes = [
         name: 'Modificar producto',
         components: {
             default: ModifyProducto,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/usuario_registrado',
+        name: 'Listado De Usuarios Registrados',
+        components: {
+            default: ListUsuarioRegistrado,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/usuario_registrado/:id',
+        name: 'Mostrar Usuario Registrado',
+        components: {
+            default: ShowUsuarioRegistrado,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/usuario_registrado/crear',
+        name: 'Crear Usuario Registrado',
+        components: {
+            default: CreateUsuarioRegistrado,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/usuario_registrado/modificar/:id',
+        name: 'Modificar Usuario Registrado',
+        components: {
+            default: ModifyUsuarioRegistrado,
             header: MainNavbar,
             footer: MainFooter
         }
@@ -201,7 +299,13 @@ app.component('ConfirmDialog', ConfirmDialog);
 app.component('DialogBox', Dialog);
 app.component('DataTable', DataTable);
 app.component('DataColumn', Column);
+app.component('InputMask', InputMask);
 app.component('PasswordInput', Password);
+app.component('ImaGen', Image);
+app.component('AccorDion', Accordion);
+app.component('AccordionTab', AccordionTab);
+app.component('CalenDar', Calendar);
+app.component('PassWord', Password);
 
 app.use(router);
 
