@@ -47,6 +47,8 @@ const ShowFerreteria = () => import(/* webpackChunkName: "ferreteria" */ './view
 
 const PerfilRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/PerfilRepartidor.vue');
 const CreateRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/CreateRepartidor.vue');
+const ListRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/ListRepartidor.vue');
+const EditarRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/EditarRepartidor.vue');
 
 const routes = [
     {
@@ -104,7 +106,7 @@ const routes = [
         }
     },
     {
-        path: '/repartidor',
+        path: '/repartidor/:id',
         name: 'Repartidor',
         components: {
             default: PerfilRepartidor,
@@ -114,9 +116,27 @@ const routes = [
     },
     {
         path: '/repartidor/crear',
-        name: 'crear repartidor',
+        name: 'Registrar Repartidor',
         components: {
             default: CreateRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/repartidor/Listado',
+        name: 'Listado de Repartidores',
+        components: {
+            default: ListRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/repartidor/Editar',
+        name: 'Editar Repartidor',
+        components: {
+            default: EditarRepartidor,
             header: MainNavbar,
             footer: MainFooter
         }
