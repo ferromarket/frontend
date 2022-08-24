@@ -32,9 +32,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 // route level code-splitting
 // this generates a separate chunk (about.[hash].js) for this route
 // which is lazy-loaded when the route is visited.
-const MainNavbar = () => import(/* webpackChunkName: "navbar" */ './layouts/MainNavbar.vue');
+const MainNavbar = () => import(/* webpackChunkName: "ferromarket" */ './layouts/MainNavbar.vue');
+const MainFooter = () => import(/* webpackChunkName: "ferromarket" */ './layouts/MainFooter.vue');
 
-const MainFooter = () => import(/* webpackChunkName: "footer" */ './layouts/MainFooter.vue');
+const LoginAuth = () => import(/* webpackChunkName: "login" */ './views/LoginAuth.vue');
 
 const IndexView = () => import(/* webpackChunkName: "index_view" */ './views/IndexView.vue');
 
@@ -65,6 +66,15 @@ const routes = [
         name: 'Inicio',
         components: {
             default: IndexView,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/ingresar',
+        name: 'Ingresar',
+        components: {
+            default: LoginAuth,
             header: MainNavbar,
             footer: MainFooter
         }
@@ -216,8 +226,8 @@ app.component('PassWord', Password);
 
 app.use(router);
 
-app.config.globalProperties.axios=axios
+app.config.globalProperties.axios = axios;
 
 app.mount('#app');
 
-export default router
+export default router;
