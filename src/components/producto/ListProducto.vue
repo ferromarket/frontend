@@ -19,6 +19,9 @@
         </template>
         <DataColumn field="Nombre" header="Nombre" :sortable="true"></DataColumn>
         <DataColumn field="Categoria" header="Categoria" :sortable="true"></DataColumn>
+        <DataColumn field="EspecifacionNombre" header="Marca" :sortable="true"></DataColumn>
+        <DataColumn field="EspecifacionData" header="Detalle" :sortable="true"></DataColumn>
+
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyProducto(slotProps.data)" />
@@ -61,9 +64,11 @@ export default {
                 .then((response) => {
                     response.data.forEach(element => {
                         let producto = {
-                            ID: element .ID,
+                            ID: element.ID,
                             Nombre: element.Nombre,
                             Categoria: element.Categoria.Nombre,
+                            EspecificacionNombre: element.espnombre,
+                            EspecificacionData: element.valor,
                         };
                         productos.value.push(producto);
                     });
