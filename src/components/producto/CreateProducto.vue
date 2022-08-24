@@ -32,7 +32,20 @@
                 </DropDown>
                 <label for="categoria">Categoría</label>
             </span>
-        </div>
+        </div>   
+        <!-- Ingreso de data --> 
+        <div class="field col-6">
+            <span class="p-float-label">
+                <InputText id="valor" type="text" v-model="valor" v-bind:class="{ 'p-invalid': valorError }" />
+                <label for="valor">Nombre espeficación</label>
+            </span>
+        </div>   
+        <div class="field col-6">
+            <span class="p-float-label">
+                <InputText id="valor2" type="text" v-model="valor2" v-bind:class="{ 'p-invalid': valor2Error }" />
+                <label for="valor2">Data</label>
+            </span>
+        </div>   
         <div class="field col-12 sm:col-2">
             <ButtonComponent @click="crearProductoClicked" class="ferro" label="Crear" icon="pi pi-check" iconPos="right" />
         </div>
