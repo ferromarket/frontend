@@ -43,6 +43,10 @@ const ListProducto = () => import(/* webpackChunkName: "producto" */ './views/pr
 const CreateProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/CreateProducto.vue');
 const ModifyProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ModifyProducto.vue');
 
+const CreateUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/CreateUsuarioRegistrado.vue');
+const ModifyUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ModifyUsuarioRegistrado.vue');
+const ListUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ListUsuarioRegistrado.vue');
+const ShowUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ShowUsuarioRegistrado.vue');
 
 const routes = [
     {
@@ -131,6 +135,42 @@ const routes = [
         name: 'Modificar producto',
         components: {
             default: ModifyProducto,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/usuario_registrado',
+        name: 'Listado De Usuarios Registrados',
+        components: {
+            default: ListUsuarioRegistrado,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/usuario_registrado/:id',
+        name: 'Mostrar Usuario Registrado',
+        components: {
+            default: ShowUsuarioRegistrado,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/usuario_registrado/crear',
+        name: 'Crear Usuario Registrado',
+        components: {
+            default: CreateUsuarioRegistrado,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/usuario_registrado/modificar/:id',
+        name: 'Modificar Usuario Registrado',
+        components: {
+            default: ModifyUsuarioRegistrado,
             header: MainNavbar,
             footer: MainFooter
         }
