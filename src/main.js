@@ -299,11 +299,12 @@ app.component('ConfirmDialog', ConfirmDialog);
 app.component('DialogBox', Dialog);
 app.component('DataTable', DataTable);
 app.component('DataColumn', Column);
+app.component('InputMask', InputMask);
+app.component('PasswordInput', Password);
 app.component('ImaGen', Image);
 app.component('AccorDion', Accordion);
 app.component('AccordionTab', AccordionTab);
 app.component('CalenDar', Calendar);
-app.component('InputMask', InputMask);
 app.component('PassWord', Password);
 
 app.use(router);

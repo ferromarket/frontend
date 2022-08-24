@@ -10,7 +10,7 @@
         <div class="field col-12">
             <span class="p-float-label">
                 <InputText id="nombre" type="text" v-model="nombre" v-bind:class="{ 'p-invalid': nombreError }" />
-                <label for="nombre">Nombre</label>
+                <label for="nombre">Nombres</label>
             </span>
         </div>
         <div class="field col-12">
@@ -45,7 +45,7 @@
         </div>
         <div class="field col-12">
             <span class="p-float-label">
-                <InputText id="telefono" type="text" v-model="telefono" v-bind:class="{ 'p-invalid': telefonoMError }" />
+                <InputMask id="telefono" mask="99999999" v-model="telefono"  v-bind:class="{ 'p-invalid': telefonoError }" />
                 <label for="telefono">Telefono</label>
             </span>
         </div>
@@ -57,7 +57,7 @@
         </div>
         <div class="field col-12">
             <span class="p-float-label">
-                <InputText id="FechaNac" type="text" v-model="FechaNac" v-bind:class="{ 'p-invalid': FechaNacError }" />
+                <InputMask id="FechaNac" mask="9999-99-99" v-model="FechaNac" slotChar="yyyy-mm-dd" v-bind:class="{ 'p-invalid': FechaNacError }" />
                 <label for="FechaNac">Fecha de Nacimiento</label>
             </span>
         </div>
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { ref} from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
@@ -86,6 +86,20 @@ export default {
         const dialogTitle = ref("Error");
         const nombre = ref("");
         const nombreError = ref(false);
+        const rut = ref("");
+        const rutError = ref(false);
+        const contrasena = ref("");
+        const contrasenaError = ref(false);
+        const email = ref("");
+        const emailError = ref(false);
+        const apellidoP = ref("");
+        const apellidoPError = ref(false);
+        const apellidoM = ref("");
+        const apellidoMError = ref(false);
+        const telefono = ref(Number(0));
+        const telefonoError = ref(false);
+        const FechaNac = ref([]);
+        const FechaNacError = ref(false);
         const direccion = ref("");
         const direccionError = ref(false);
         const error = ref(false);
@@ -147,6 +161,13 @@ export default {
                 .post(api + "/usuario", {
                 Nombre: nombre.value,
                 Direccion: direccion.value,
+                //ID: ID.value,
+                ApellidoPaterno: apellidoP.value,
+                ApellidoMaterno: apellidoM.value,
+                RUT:rut.value,
+                Telefono: Number(telefono.value),
+                FechaNacimiento: FechaNac.value,
+                Email:email.value
             })
                 .then(function (response) {
                 if (response !== null && response.status === 200) {
@@ -163,7 +184,7 @@ export default {
         const redirect = (id) => {
             router.push("/usuario/" + id);
         };
-        return { nombre, nombreError, direccion, direccionError, crearUsuarioClicked, crearUsuario, validar, displayModal, dialogTitle, modalMessage, openModal, closeModal, error };
+        return { nombre, nombreError,rut, rutError, contrasena, contrasenaError, email, emailError, apellidoP, apellidoPError, apellidoM, apellidoMError, telefono, telefonoError, FechaNac, FechaNacError, direccion, direccionError, crearUsuarioClicked, crearUsuario, validar, displayModal, dialogTitle, modalMessage, openModal, closeModal, error };
     }
 };
 </script>
