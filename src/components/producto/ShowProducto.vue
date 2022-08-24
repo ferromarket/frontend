@@ -11,10 +11,10 @@
                     {{ producto.Categoria }}
                 </div>
                 <div class="field col-12">
-                    <strong>Marca:</strong> {{ producto.EspecificacionNombre.Nombre }}
+                    <strong>Marca:</strong> 
                 </div>
                 <div class="col-12">
-                    <strong>Detalle:</strong> {{ producto.EspecificacionData.Valor }}
+                    <strong>Detalle:</strong> 
                 </div>
             </div>
         </template>
@@ -52,7 +52,7 @@ export default {
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        router.push("/ferreterias");
+                        router.push("/productos");
                     }
                     console.log(err);
                 });
