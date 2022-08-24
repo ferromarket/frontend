@@ -51,6 +51,11 @@ const CreateRepartidor = () => import(/* webpackChunkName: "repartidor" */ './vi
 const ListRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/ListRepartidor.vue');
 const EditarRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/EditarRepartidor.vue');
 
+const ListProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ListProducto.vue');
+const CreateProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/CreateProducto.vue');
+const ModifyProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ModifyProducto.vue');
+
+
 const routes = [
     {
         path: '/:pathMatch(.*)*',
@@ -143,10 +148,37 @@ const routes = [
         }
     },
     {
-        path: '/repartidor/Editar',
+        path: '/repartidor/Editar/:id',
         name: 'Editar Repartidor',
         components: {
             default: EditarRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/producto',
+        name: 'Productos',
+        components: {
+            default: ListProducto,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/producto/crear',
+        name: 'Crear Producto',
+        components: {
+            default: CreateProducto,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/producto/modificar/:id',
+        name: 'Modificar producto',
+        components: {
+            default: ModifyProducto,
             header: MainNavbar,
             footer: MainFooter
         }

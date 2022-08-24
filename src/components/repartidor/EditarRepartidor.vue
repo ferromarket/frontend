@@ -9,7 +9,7 @@
     <div class="w-full justify-content-center p-fluid grid">
             <div class="field col-12">
                 <span class="p-float-label">
-                <InputMask mask="99999999-9" v-model="rut" v-bind:class="{ 'p-invalid': rutError }"  />
+                <InputMask mask="999999999" v-model="rut" v-bind:class= "{ 'p-invalid': rutError }"  />
                 <label for="rut">Rut</label>
                 </span>
             </div>
@@ -60,14 +60,14 @@
 
             <div class="field col-6">
                 <span class="p-float-label">
-                <InputMask mask="99999999" v-model="telefono" v-bind:class="{ 'p-invalid': fechaNacimientoError }"  />
+                <InputMask mask="99999999" v-model="telefono" v-bind:class="{ 'p-invalid': telefonoError }"  />
                 <label for="telefono">Telefono</label>
                 </span>
             </div>
 
             <div class="field col-6">
                 <span class="p-float-label">
-                <InputMask mask="99/99/9999" v-model="fechaNacimiento" slotChar="mm/dd/yyyy" v-bind:class="{ 'p-invalid': fechaNacimientoError }" />
+                <InputMask mask="9999-99-99" v-model="fechaNacimiento" slotChar="yyyy-mm-dd" v-bind:class="{ 'p-invalid': fechaNacimientoError }" />
                 <label for="fechaLicencia">Fecha de Nacimiento</label>
                 </span>
             </div>
@@ -81,8 +81,8 @@
       
             <div class="field col-6">
                 <span class="p-float-label">
-                <InputMask mask="99/99/9999" v-model="fechaLicencia" slotChar="mm/dd/yyyy" v-bind:class="{ 'p-invalid': fechaLicenciaError }" />
-                <label for="fechaLicencia">Fecha de Nacimiento</label>
+                <InputMask mask="9999-99-99" v-model="fechaLicencia" slotChar="yyyy-mm-dd" v-bind:class="{ 'p-invalid': fechaLicenciaError }" />
+                <label for="fechaLicencia">Fecha de Licencia</label>
                 </span>
             </div>
         <div class="field col-12 sm:col-3">
@@ -127,7 +127,7 @@ export default {
         const apellidoPaterno = ref("");
         const apellidoMaterno = ref("");
         const direccion = ref("");
-        const telefono = ref("");
+        const telefono = ref(Number(0));
         const fechaNacimiento = ref([]);
         const tipoLicencia= ref("");
         const fechaLicencia = ref([]);
@@ -248,7 +248,7 @@ export default {
                 openModal("Falta la Fecha Nacimiento del repartidor a registrar!");
                 return false;
             }
-            if (tipoLicencia.value.trim() != 'b' && tipoLicencia.value.trim() != "B" && tipoLicencia.value.trim() != "c"&& tipoLicencia.value.trim() != "C" && tipoLicencia.value.trim() != "d" && tipoLicencia.value.trim() != "D"&& tipoLicencia.value.trim() != "d" && tipoLicencia.value.trim() != "F" && tipoLicencia.value.trim() != "f" ) {
+            if (tipoLicencia.value.toUpperCase().trim() != "B" && tipoLicencia.value.toUpperCase().trim() != "C" && tipoLicencia.value.toUpperCase().trim() != "D" && tipoLicencia.value.toUpperCase().trim() != "F" ) {
                 tipoLicenciaError.value = true;
                 openModal("El tipo de licencia solo puede ser: B,C,D,E,F");
                 return false;
@@ -289,13 +289,13 @@ export default {
             axios
                 .patch(api + "/ferreteria/" + route.params.id, {
                             Rut: rut.value,
+                            Contrasena: contrasena.value,
                             Email: email.value,
                             Nombres: nombres.value,
-                            ApellidoP: apellidoPaterno.value,
-                            ApellidoM: apellidoMaterno.value,
+                            ApellidoPaterno: apellidoPaterno.value,
+                            ApellidoMaterno: apellidoMaterno.value,
                             Telefono: telefono.value,
                             Direccion: direccion.value,
-                            //FechaRegistro: fechaRegistro.value,
                             TipoLicencia: tipoLicencia.value,
                             FechaLicencia: fechaLicencia.value,
                 })

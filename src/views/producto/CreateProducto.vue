@@ -3,23 +3,23 @@
         <CardPanel class="flex justify-content-center">
             <template #title>
                 <div class="flex justify-content-center flex-wrap card-container">
-                    <h2>Editar Repartidor</h2>
+                    <h2>Crear Producto</h2>
                 </div>
             </template>
             <template #content>
-                <EditarRepartidor/>
+                <CreateProducto/>
             </template>
         </CardPanel>
     </div>
 </template>
 
 <script>
-import EditarRepartidor from '../../components/repartidor/EditarRepartidor.vue'
+import CreateProducto from '../../components/producto/CreateProducto.vue'
 
 export default {
     name: 'App',
     components: {
-        EditarRepartidor
+        CreateProducto
     }
 }
 </script>

@@ -22,16 +22,16 @@
         <DataColumn field="Rut" header="Rut" :sortable="true"></DataColumn>
         <DataColumn field="Email" header="Email" :sortable="true"></DataColumn>
         <DataColumn field="Nombres" header="Nombres" :sortable="true"></DataColumn>
-        <DataColumn field="Apellido P" header="Apellido M" :sortable="true"></DataColumn>
-        <DataColumn field="Apellido M" header="Apellido M" :sortable="true"></DataColumn>
+        <DataColumn field="ApellidoPaterno" header="Apellido Paterno" :sortable="true"></DataColumn>
+        <DataColumn field="ApellidoMaterno" header="Apellido Materno" :sortable="true"></DataColumn>
         <DataColumn field="Telefono" header="Telefono" :sortable="true"></DataColumn>
-        <DataColumn field="Direccion" header="Cerrar" :sortable="true"></DataColumn>
-        <DataColumn field="Fecha Registro" header="Fecha Registro" :sortable="true"></DataColumn>
-        <DataColumn field="Tipo De Licencia" header="Tipo De Licencia" :sortable="true"></DataColumn>
-        <DataColumn field="Fecha de Licencia" header="Fecha de Licencia" :sortable="true"></DataColumn>
+        <DataColumn field="Direccion" header="Direccion" :sortable="true"></DataColumn>
+        <DataColumn field="CreatedAt" header="Fecha Registro" :sortable="true"></DataColumn>
+        <DataColumn field="TipoLicencia" header="Tipo De Licencia" :sortable="true"></DataColumn>
+        <DataColumn field="FechaLicencia" header="Fecha de Licencia" :sortable="true"></DataColumn>
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
-                <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyRepartidor(slotProps.data)" />
+                <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="editarRepartidor(slotProps.data)" />
                 <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteRepartidor(slotProps.data)" />
             </template>
         </DataColumn>
@@ -74,15 +74,16 @@ export default {
                 .then((response) => {
                     response.data.forEach(element => {
                         let repartidor = {
+                            CreatedAt: element.CreatedAt ,
                             ID: element.ID,
-                            Rut: element.Rut,
+                            Rut: element.RUT,
                             Email: element.Email,
                             Nombres: element.Nombres,
-                            ApellidoP: element.ApellidoP,
-                            ApellidoM: element.ApellidoM,
+                            ApellidoPaterno: element.ApellidoPaterno,
+                            ApellidoMaterno: element.ApellidoMaterno,
                             Telefono: element.Telefono,
                             Direccion: element.Direccion,
-                            FechaRegistro: element.FechaRegistro,
+                            FechaRegistro: element.FechaRegistracion,
                             TipoLicencia: element.TipoLicencia,
                             FechaLicencia: element.FechaLicencia,
 
@@ -90,6 +91,7 @@ export default {
                         repartidores.value.push(repartidor);
                     });
                 })
+               
                 .catch(err => {
                     console.log(err);
                 });
@@ -100,8 +102,8 @@ export default {
             //router.push("/repartidor/crear");
         };
 
-        const modifyRepartidor = (repartidor) => {
-            router.push("/repartidor/modificar/" + repartidor.ID);
+        const editarRepartidor = (repartidor) => {
+            router.push("/repartidor/Editar/" + repartidor.ID);
         };
 
         const confirmDeleteRepartidor = (repartidor) => {
@@ -134,7 +136,7 @@ export default {
         return {
             getRepartidores,
             createRepartidor,
-            modifyRepartidor,
+            editarRepartidor,
             confirmDeleteRepartidor,
             deleteRepartidor,
             repartidores,

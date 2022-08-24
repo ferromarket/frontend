@@ -10,14 +10,15 @@
             </template>
             <template #title>
                 Nombre Del Repartidor:
-                 {{repartidor.nombres}}
+                 {{repartidor.RUT}}
             </template>
             <template #subtitle>
-                RUT: {{repartidor.rut}}
+                RUT: {{repartidor.Nombres}}
             </template>
             <template #content>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
-                quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</p>
+                <p>
+
+                </p>
             </template>
             <template #footer>
                 <div class="flex justify-content-center">
@@ -76,12 +77,14 @@ export default {
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
 
         const repartidor = ref({
-            Rut: "",
+            RUT: "",
             Email: "",
             Nombres: "",
-            Comuna: "",
-            Apellidop: "",
+            ApellidoPaterno: "",
+            ApellidoMaterno: "",
             ApellidoM: "",
+            TipoLicencia: "",
+
             }
             
         );
@@ -94,7 +97,7 @@ export default {
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        router.push("/repartidor");
+                        router.push("/repartidores");
                     }
                     console.log(err);
                 });

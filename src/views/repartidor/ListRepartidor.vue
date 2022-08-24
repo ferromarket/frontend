@@ -1,6 +1,7 @@
 <template>
     <CardPanel class="flex justify-content-center sm:col-6 sm:col-offset-3">
         <template #content>
+            <h2>Listado de Repartidores Registrados</h2>
             <ListRepartidor/>
         </template>
     </CardPanel>
