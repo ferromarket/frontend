@@ -75,8 +75,8 @@ export default {
         const nombre = ref("");
         const selectedCategoria = ref();
         const categorias = ref([]);
-        const espnombre = ref("");
-        const valor = ref("");
+        //const espnombre = ref("");
+        //const valor = ref("");
 
         const nombreError = ref(false);
         const selectedCategoriaError = ref(false);
@@ -103,7 +103,7 @@ export default {
             selectedCategoriaError.value = false;
             if (nombre.value.trim() === "") {
                 nombreError.value = true;
-                openModal("Falta nombre de producto!");
+                openModal("Falta nombre de producto");
                 return false;
             }
             if (selectedCategoria.value === null) {
@@ -128,8 +128,8 @@ export default {
                 .post(api + "/producto", {
                     Nombre: nombre.value,
                     CategoriaID: selectedCategoria.value.ID,
-                    EspecificacionNombre: espnombre.value,
-                    EspecificacionData: valor.value,
+                   // EspecificacionNombre: EspecificacionNombre.Nombre.value,
+                  //  EspecificacionData: EspecificacionData.Valor.value,
                 })
                 .then(function (response) {
                     if (response !== null && response.status != 204) {
