@@ -43,6 +43,21 @@ export default {
                             }
                         ]*/
                     },
+                    /*{
+                        separator: true
+                    }*/
+                    {
+                        label: 'Usuarios Registrados',
+                        //icon: 'pi pi-fw pi-plus',
+                        to: '/usuario_registrado',
+                        /*items: [
+                            {
+                                label: 'Crear',
+                                //icon:'pi pi-fw pi-plus',
+                                to: '/usuario_registrado/crear'
+                            }
+                        ]*/
+                    },
                 ]
             }
         ]);
