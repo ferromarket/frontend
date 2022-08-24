@@ -1,9 +1,9 @@
 <template>
     <ConfirmDialog/>
-    <DialogBox header="Error" v-model:visible="displayModal" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '25vw'}" :modal="true">
-        <p class="m-0">{{modalMessage}}</p>
+    <DialogBox v-bind:header="dialogTitle" v-model:visible="displayModal" :closable="false" :breakpoints="{'960px': '75vw', '640px': '90vw'}" :style="{width: '25vw'}" :modal="true">
+        <p class="m-0">{{ modalMessage }}</p>
         <template #footer>
-            <ButtonComponent label="Cerrar" icon="pi pi-check" @click="closeModal" class="p-button-danger" autofocus />
+            <ButtonComponent label="Cerrar" icon="pi pi-check" @click="closeModal" v-bind:class="{ 'p-button-danger': error }" autofocus />
         </template>
     </DialogBox>
     <div class="w-full justify-content-center p-fluid grid">
@@ -85,32 +85,29 @@
                 <label for="fechaLicencia">Fecha de Nacimiento</label>
                 </span>
             </div>
-        
-        <div class="field col-12">
-            <ButtonComponent @click="crearRepartidorClicked" class="repartidor" label="Crear" icon="pi pi-check" iconPos="right" />
+        <div class="field col-12 sm:col-3">
+            <ButtonComponent @click="editarRepartidorClicked" class="repartidor" label="Editar" icon="pi pi-check" iconPos="right" />
         </div>
-        
     </div>                    
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
-import { useRouter } from 'vue-router';
-
 
 export default {
-
-
-
-    
     setup() {
-        
         onMounted(() => {
-           
+            getRepartidor();
+            editarRepartidorClicked();
+            editarRepartidor();
         });
+
         const router = useRouter();
+        const route = useRoute();
+
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
@@ -118,7 +115,11 @@ export default {
         const confirm = useConfirm();
         const displayModal = ref(false);
         const modalMessage = ref("");
-        let today;
+        const dialogCallback = ref();
+        const dialogTitle = ref("Error");
+
+        const repartidor = ref();
+
         const rut = ref("");
         const contrasena = ref("");
         const email = ref("");
@@ -130,6 +131,8 @@ export default {
         const fechaNacimiento = ref([]);
         const tipoLicencia= ref("");
         const fechaLicencia = ref([]);
+
+        let today;
 
         const rutError = ref(false);
         const contrasenaError = ref(false);
@@ -143,16 +146,42 @@ export default {
         const tipoLicenciaError = ref(false);
         const fechaLicenciaError = ref(false);
 
+        const error = ref(false);
 
-        const crearRepartidorClicked = () => {
+        const getRepartidor = () => {
+            axios
+                .get(api + "/repartidor/" + route.params.id)
+                .then((response) => {
+                    repartidor.value = response.data;
+                    rut.value = response.data;
+                    contrasena.value = response.data;
+                    email.value = response.data;
+                    nombres.value = response.data;
+                    apellidoPaterno.value = response.data;
+                    apellidoMaterno.value = response.data;
+                    telefono.value = response.data;
+                    direccion.value = response.data;
+                    fechaNacimiento.value = response.data;
+                    tipoLicencia.value = response.data;
+                    fechaLicencia.value = response.data;
+                })
+                .catch(err => {
+                    if (err.response.status === 404) {
+                        router.push("/repartidor/Listado");
+                    }
+                    console.log(err);
+                });
+    };
+
+        const editarRepartidorClicked = () => {
             if (validar()) {
                 confirm.require({
-                    message: 'Usted se registrará como "' + nombres.value + '"?',
+                    message: 'Modificar repartidor llamado " ' + nombres.value + '"?',
                     header: 'Confirmación',
                     icon: 'pi pi-info-circle',
                     acceptClass: 'p-button-warning',
                     accept: () => {
-                        crearRepartidor();
+                        editarRepartidor();
                     },
                     reject: () => {
                         console.log("rejected");
@@ -160,11 +189,6 @@ export default {
                 });
             }
         };
-
-
-
-
-        
 
         const validar = () => {
             rutError.value = false;
@@ -242,33 +266,42 @@ export default {
             return true;
         };
 
-        const openModal = (message) => {
+        const openModal = (message, callback = null) => {
             modalMessage.value = message;
+            dialogCallback.value = callback;
+            if (callback === null) {
+                dialogTitle.value = "Error";
+            }
+            else {
+                dialogTitle.value = "Éxito";
+            }
             displayModal.value = true;
         };
 
         const closeModal = () => {
             displayModal.value = false;
+            if (dialogCallback.value !== null && typeof dialogCallback.value === 'function') {
+                dialogCallback.value();
+            }
         };
 
-        const crearRepartidor = () => {
+        const editarRepartidor = () => {
             axios
-                .post(api + "/repartidor", {
-                    Rut: rut.value,
-                    Contraseña: contrasena.value,
-                    Email: email.value,
-                    Nombres: nombres.value,
-                    ApellidoPaterno: apellidoPaterno.value,
-                    ApellidoMaterno: apellidoMaterno.value,
-                    Telefono: telefono.value,
-                    Direccion: direccion.value,
-                    FechaNacimiento: fechaNacimiento.value,
-                    TipoLicencia: tipoLicencia.value,
-                    FechaLicencia: fechaLicencia.value,
-                           })
+                .patch(api + "/ferreteria/" + route.params.id, {
+                            Rut: rut.value,
+                            Email: email.value,
+                            Nombres: nombres.value,
+                            ApellidoP: apellidoPaterno.value,
+                            ApellidoM: apellidoMaterno.value,
+                            Telefono: telefono.value,
+                            Direccion: direccion.value,
+                            //FechaRegistro: fechaRegistro.value,
+                            TipoLicencia: tipoLicencia.value,
+                            FechaLicencia: fechaLicencia.value,
+                })
                 .then(function (response) {
-                    if (response !== null && response.status === 200) {
-                        openModal("Repartidor registrado exitosamente!", redirect, response.data.ID);
+                    if (response !== null && response.status == 200) {
+                        openModal("repartidor modificado exitosamente!", redirect);
                     }
                     else {
                         console.log(response);
@@ -278,14 +311,11 @@ export default {
                     console.log(error);
                 });
         };
-
-        const redirect = (id) => {
-            router.push("/repartidor/" + id);
+                const redirect = () => {
+            router.push({name: "Mostrar Repartidor"});
         };
-        
-
-
-        return { rut,
+        return {             
+            rut,
             rutError,
             contrasena,
             contrasenaError,
@@ -307,18 +337,19 @@ export default {
             tipoLicenciaError,
             fechaLicencia,
             fechaLicenciaError,
-            crearRepartidorClicked,
-            crearRepartidor,
+            editarRepartidorClicked,
+            getRepartidor,
+            editarRepartidor,
             validar,
             displayModal,
+            dialogTitle,
             modalMessage,
             openModal,
             closeModal,
+            error
         };
     }
 };
-
-
 </script>
 
 <style scoped lang="scss">

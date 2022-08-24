@@ -10,10 +10,10 @@
             </template>
             <template #title>
                 Nombre Del Repartidor:
-                 Aqui ira el nombre
+                 {{repartidor.nombres}}
             </template>
             <template #subtitle>
-                Aqui Ira el RUT: 12345678-9
+                RUT: {{repartidor.rut}}
             </template>
             <template #content>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt
@@ -57,11 +57,55 @@
 
 
 <script>
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+import router from '@/main';
 
 export default {
+
     setup() {
+        onMounted(() => {
+            getRepartidor();
+        });
+
+        const route = useRoute();
+
+        // si el puerto es 8080, no es con proxy
+        const url = new URL(window.location.href);
+        const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
+
+        const repartidor = ref({
+            Rut: "",
+            Email: "",
+            Nombres: "",
+            Comuna: "",
+            Apellidop: "",
+            ApellidoM: "",
+            }
+            
+        );
+
+        const getRepartidor = () => {
+            axios
+                .get(api + "/repartidor/" + route.params.id)
+                .then((response) => {
+                    repartidor.value = response.data;
+                })
+                .catch(err => {
+                    if (err.response.status === 404) {
+                        router.push("/repartidor");
+                    }
+                    console.log(err);
+                });
+        };
+
+        return {
+            repartidor,
+            getRepartidor
+        };
     }
-}
+};
 </script>
 <style lang="scss" scoped>
 ::v-deep(.color) {
