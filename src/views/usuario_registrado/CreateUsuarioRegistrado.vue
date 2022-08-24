@@ -13,11 +13,11 @@
 
 <script>
 import CreateUsuarioRegistrado from '../../components/usuario_registrado/CreateUsuarioRegistrado.vue'
-//import auth from '../../utils/auth.js';
+import auth from '../../utils/auth.js';
 
 export default {
     setup() {
-        //auth.checkToken();
+        auth.checkToken();
     },
     name: 'App',
     components: {
