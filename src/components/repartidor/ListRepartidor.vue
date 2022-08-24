@@ -26,9 +26,9 @@
         <DataColumn field="ApellidoMaterno" header="Apellido Materno" :sortable="true"></DataColumn>
         <DataColumn field="Telefono" header="Telefono" :sortable="true"></DataColumn>
         <DataColumn field="Direccion" header="Direccion" :sortable="true"></DataColumn>
-        <DataColumn field="CreatedAt" header="Fecha Registro" :sortable="true"></DataColumn>
+        <!--<DataColumn field="CreatedAt" header="Fecha Registro" :sortable="true"></DataColumn>-->
         <DataColumn field="TipoLicencia" header="Tipo De Licencia" :sortable="true"></DataColumn>
-        <DataColumn field="FechaLicencia" header="Fecha de Licencia" :sortable="true"></DataColumn>
+        <!--<DataColumn field="FechaLicencia" header="Fecha de Licencia" :sortable="true"></DataColumn>-->
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="editarRepartidor(slotProps.data)" />
@@ -108,7 +108,7 @@ export default {
 
         const confirmDeleteRepartidor = (repartidor) => {
             confirm.require({
-                message: 'Estás seguro que quieres eliminar al repartidor "' + repartidor.Nombre + '"?',
+                message: 'Estás seguro que quieres eliminar al repartidor "' + repartidor.Nombres + '"?',
                 header: 'Confirmación',
                 icon: 'pi pi-exclamation-triangle',
                 acceptClass: 'p-button-danger',
@@ -134,6 +134,7 @@ export default {
         };
 
         return {
+
             getRepartidores,
             createRepartidor,
             editarRepartidor,
@@ -142,6 +143,7 @@ export default {
             repartidores,
             filters,
             rowSelected
+            
         };
     }
 };

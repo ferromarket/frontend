@@ -101,8 +101,6 @@ export default {
     setup() {
         onMounted(() => {
             getRepartidor();
-            editarRepartidorClicked();
-            editarRepartidor();
         });
 
         const router = useRouter();
@@ -287,14 +285,14 @@ export default {
 
         const editarRepartidor = () => {
             axios
-                .patch(api + "/ferreteria/" + route.params.id, {
+                .patch(api + "/repartidor/" + route.params.id, {
                             Rut: rut.value,
                             Contrasena: contrasena.value,
                             Email: email.value,
                             Nombres: nombres.value,
                             ApellidoPaterno: apellidoPaterno.value,
                             ApellidoMaterno: apellidoMaterno.value,
-                            Telefono: telefono.value,
+                            Telefono: Number(telefono.value),
                             Direccion: direccion.value,
                             TipoLicencia: tipoLicencia.value,
                             FechaLicencia: fechaLicencia.value,
@@ -312,7 +310,7 @@ export default {
                 });
         };
                 const redirect = () => {
-            router.push({name: "Mostrar Repartidor"});
+            router.push({name: "Repartidor"});
         };
         return {             
             rut,

@@ -1,6 +1,6 @@
 <template>
    <div class="card ">
-    <div class="flex pl-6 pt-5 flex-wrap-reverse md:flex-wrap card-container orange-container" style="max-width: 100%">
+    <div class="flex m-2 flex-wrap-reverse md:flex-wrap card-container orange-container" style="max-width: 100%">
         <div class="flex align-items-center justify-content-center bg-orange-400 font-bold text-white m-2 border-round" style="min-width: 40%; min-height: 30%">
         <CardPanel style="width: 25em">
             <template #header>
@@ -9,48 +9,36 @@
                 </div>
             </template>
             <template #title>
-                Nombre Del Repartidor:
-                 {{repartidor.RUT}}
+                <div class="flex align-items-center justify-content-center">
+                    Bienvenido:
+                </div>
+                <div class="flex align-items-center justify-content-center">
+                {{repartidor.Nombres}}
+                </div>
             </template>
             <template #subtitle>
-                RUT: {{repartidor.Nombres}}
+                <div class="flex align-items-center justify-content-center">
+                RUT: {{repartidor.RUT}} 
+                </div>
+                <div class="flex align-items-center justify-content-center">
+                 Tipo de Licencia: {{repartidor.TipoLicencia}}
+                </div>
             </template>
             <template #content>
                 <p>
 
                 </p>
             </template>
-            <template #footer>
+            <template #footer="slotProps">
                 <div class="flex justify-content-center">
-                <ButtonComponent class="color justify-content-center"  icon="pi pi-pencil" label="Editar" />
-                <ButtonComponent icon="pi pi-trash" label="Borrar" class="color justify-content-center" style="margin-left: .5em" />
+                <ButtonComponent class="color justify-content-center"  icon="pi pi-pencil" label="Editar" @click="editarRepartidor(slotProps.data)" />
+                <ButtonComponent icon="pi pi-trash" label="Borrar" class="color justify-content-center" style="margin-left: .5em" @click="confirmDeleteRepartidor(slotProps.data)" />
+                <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="VolverRepartidor()" />
                 </div>
+
             </template>
         </CardPanel>
         </div>
-        <div class="align-items-center bg-orange-400 font-bold text-white m-2 border-round" style="width: 55%; height: 55%">
-            <div >
-            <template >
-           <h5>Default</h5>
-           </template>
-        <AccorDion :activeIndex="0">
-            <AccordionTab header="Header I">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </AccordionTab>
-            <AccordionTab header="Header II">
-                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.</p>
-            </AccordionTab>
-            <AccordionTab header="Header III">
-                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.</p>
-            </AccordionTab>
-        </AccorDion>
-</div>
-
-
-        </div>
-            <div class="flex align-items-center justify-content-center bg-orange-400 font-bold text-white m-2 border-round" style="width: 55%; height: 55%">
-            3
-            </div>
         </div>
 
 </div>
@@ -88,7 +76,7 @@ export default {
             }
             
         );
-
+        const repartidores = ref([]);
         const getRepartidor = () => {
             axios
                 .get(api + "/repartidor/" + route.params.id)
@@ -103,9 +91,51 @@ export default {
                 });
         };
 
+        const VolverRepartidor = () => {
+            router.push({name: "Listado de Repartidores"});
+        }
+
+        
+        const editarRepartidor = (repartidor) => {
+            router.push("/repartidor/Editar/" + repartidor.ID);
+        };
+
+
+            const confirmDeleteRepartidor = (repartidor) => {
+            confirm.require({
+                message: 'Estás seguro que quieres eliminar al repartidor "' + repartidor.Nombres + '"?',
+                header: 'Confirmación',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    deleteRepartidor(repartidor);
+                },
+                reject: () => {
+                    console.log("rejected");
+                }
+            });
+        };
+
+        const deleteRepartidor = (repartidor) => {
+            axios
+                .delete(api + "/repartidor/" + repartidor.ID)
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            repartidores.value = repartidores.value.filter(data => data.ID != repartidor.ID);
+        };
+
         return {
             repartidor,
-            getRepartidor
+            getRepartidor,
+            repartidores,
+            deleteRepartidor,
+            confirmDeleteRepartidor,
+            editarRepartidor,
+            VolverRepartidor
         };
     }
 };
