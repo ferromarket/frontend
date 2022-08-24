@@ -8,10 +8,13 @@
         <template #content>
             <div class="w-full justify-content-center p-fluid grid">
                 <div class="field col-12">
-                    {{ producto.Descripcion }}
+                    {{ producto.Categoria }}
                 </div>
                 <div class="field col-12">
-                    <strong>Categoría</strong> {{ categoria.Nombre }},
+                    <strong>Marca:</strong> {{ producto.EspecificacionNombre.Nombre }}
+                </div>
+                <div class="col-12">
+                    <strong>Detalle:</strong> {{ producto.EspecificacionData.Valor }}
                 </div>
             </div>
         </template>
@@ -38,28 +41,18 @@ export default {
 
         const producto = ref({
             Nombre: "",
-            Descripcion: "",
-            Direccion: "",
-            Comuna: {
-                Nombre: "",
-                Ciudad: {
-                    Nombre: "",
-                    Region: {
-                        Nombre: ""
-                    }
-                }
-            },
+            Categoria: "",
         });
 
         const getProducto = () => {
             axios
-                .get(api + "/producto/" + route.params.id)
+                .get(api + "/productos" + route.params.id)
                 .then((response) => {
                     producto.value = response.data;
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        router.push("/productos");
+                        router.push("/ferreterias");
                     }
                     console.log(err);
                 });

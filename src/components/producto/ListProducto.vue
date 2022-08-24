@@ -25,7 +25,9 @@
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyProducto(slotProps.data)" />
-                <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteProducto(slotProps.data)" />
+                <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProducto(slotProps.data)" />
+                <ButtonComponent icon="pi pi-eye" class="p-button-rounded p-button-info" @click="showProducto(slotProps.data)" />
+
             </template>
         </DataColumn>
     </DataTable>
@@ -67,8 +69,8 @@ export default {
                             ID: element.ID,
                             Nombre: element.Nombre,
                             Categoria: element.Categoria.Nombre,
-                            EspecificacionNombre: element.espnombre,
-                            EspecificacionData: element.valor,
+                            EspecificacionNombre: element.Nombre,
+                            EspecificacionData: element.Valor,
                         };
                         productos.value.push(producto);
                     });
