@@ -42,6 +42,7 @@ import { useRouter } from 'vue-router';
 import { FilterMatchMode } from 'primevue/api';
 import { useConfirm } from "primevue/useconfirm";
 import axios from 'axios';
+import auth from '../../utils/auth';
 
 export default {
     setup() {
@@ -117,7 +118,7 @@ export default {
 
         const deleteUsuario = (usuario) => {
             axios
-                .delete(api + "/usuarios/" + usuario.ID)
+                .delete(api + "/usuarios/" + usuario.ID, auth.getTokenHeader())
                 .then((response) => {
                     console.log(response);
                 })
