@@ -30,6 +30,7 @@ import { ref} from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
+import auth from '../../utils/auth';
 
 export default {
     setup() {
@@ -133,7 +134,7 @@ export default {
                 .patch(api + "/usuario/" + route.params.id, {
                     Nombre: nombre.value,
                     Direccion: direccion.value
-                })
+                }, auth.getTokenHeader())
                 .then(function (response) {
                     if (response !== null && response.status == 200) {
                         openModal("Usuario modificado exitosamente!", redirect);

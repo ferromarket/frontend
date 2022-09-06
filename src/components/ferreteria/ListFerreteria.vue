@@ -127,7 +127,7 @@ export default {
 
         const deleteFerreteria = (ferreteria) => {
             axios
-                .delete(api + "/ferreteria/" + ferreteria.ID)
+                .delete(api + "/ferreteria/" + ferreteria.ID, auth.getTokenHeader())
                 .then((response) => {
                     console.log(response);
                 })

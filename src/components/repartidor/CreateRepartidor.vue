@@ -9,7 +9,7 @@
     <div class="w-full justify-content-center p-fluid grid">
             <div class="field col-12">
                 <span class="p-float-label">
-                <InputMask mask="999999999" v-model="rut" v-bind:class="{ 'p-invalid': rutError }"  />
+                <InputMask mask="99.999.999-*" v-model="rut" v-bind:class="{ 'p-invalid': rutError }"  />
                 <label for="rut">Rut</label>
                 </span>
             </div>
@@ -182,6 +182,12 @@ export default {
                 openModal("Falta el rut del repartidor a registrar!");
                 return false;
             }
+            const Udigito = rut.value.slice(-1);   
+            if (Udigito != "k" && isNaN(Udigito)) {
+                rutError.value = true;
+                openModal("El digitio verificador solo puede ser k o un numero!");
+                return false;
+            }
             if (contrasena.value.trim() === "") {
                 contrasenaError.value = true;
                 openModal("Falta la contraseña del repartidor a registrar!");
@@ -250,6 +256,8 @@ export default {
             displayModal.value = false;
         };
 
+
+
         const crearRepartidor = () => {
             axios
                 .post(api + "/repartidor", {
@@ -267,7 +275,7 @@ export default {
                            })
                 .then(function (response) {
                     if (response !== null && response.status === 200) {
-                        openModal("Repartidor registrado exitosamente!", redirect, response.data.ID);
+                        openModal("Repartidor registrado exitosamente!", redirect);
                     }
                     else {
                         console.log(response);
@@ -278,9 +286,11 @@ export default {
                 });
         };
 
-        const redirect = (id) => {
-            router.push("/repartidor/" + id);
+        const redirect = () => {
+            router.push({name: "Repartidor"});
         };
+
+
         
 
 
@@ -313,6 +323,7 @@ export default {
             modalMessage,
             openModal,
             closeModal,
+            
         };
     }
 };
