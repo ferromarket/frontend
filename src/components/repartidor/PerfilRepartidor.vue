@@ -96,8 +96,8 @@ export default {
         }
 
         
-        const editarRepartidor = (repartidor) => {
-            router.push("/repartidor/Editar/" + repartidor.ID);
+        const editarRepartidor = () => {
+            router.push("/repartidor/Editar/" + route.params.id);
         };
 
 
@@ -109,6 +109,7 @@ export default {
                 acceptClass: 'p-button-danger',
                 accept: () => {
                     deleteRepartidor(repartidor);
+                    router.push({name: "Listado de Repartidores"});
                 },
                 reject: () => {
                     console.log("rejected");
@@ -125,7 +126,7 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
-            repartidores.value = repartidores.value.filter(data => data.ID != repartidor.ID);
+            
         };
 
         return {
