@@ -26,9 +26,7 @@
         <DataColumn field="ApellidoMaterno" header="Apellido Materno" :sortable="true"></DataColumn>
         <DataColumn field="Telefono" header="Telefono" :sortable="true"></DataColumn>
         <DataColumn field="Direccion" header="Direccion" :sortable="true"></DataColumn>
-        <!--<DataColumn field="CreatedAt" header="Fecha Registro" :sortable="true"></DataColumn>-->
         <DataColumn field="TipoLicencia" header="Tipo De Licencia" :sortable="true"></DataColumn>
-        <!--<DataColumn field="FechaLicencia" header="Fecha de Licencia" :sortable="true"></DataColumn>-->
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="editarRepartidor(slotProps.data)" />
@@ -67,6 +65,8 @@ export default {
         const rowSelected = (event) => {
             router.push("/repartidor/" + event.data.ID);
         };
+
+      
 
         const getRepartidores = () => {
             axios
