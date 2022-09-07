@@ -52,7 +52,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
 
@@ -62,6 +62,7 @@ export default {
             getCategorias();
         });
 
+        const router = useRouter();
         const route = useRoute();
 
         // si el puerto es 8080, no es con proxy
@@ -71,31 +72,43 @@ export default {
         const confirm = useConfirm();
         const displayModal = ref(false);
         const modalMessage = ref("");
+        const dialogCallback = ref();
+        const dialogTitle = ref("Error");
 
+        const producto = ref();
+
+        const valor1 = ref();
+        const valor2 = ref();
         const nombre = ref("");
         const selectedCategoria = ref();
         const categorias = ref([]);
 
         const nombreError = ref(false);
         const selectedCategoriaError = ref(false);
+        const valor1Error = ref(false);
+        const valor2Error = ref(false);
+
+        const error = ref(false);
 
 
         const getProducto = () => {
             axios
-                .get(api + "/productos/" + route.params.id)
+                .get(api + "/producto/" + route.params.id)
                 .then((response) => {
-                    response.data.forEach(element => {
-                        let producto = {
-                            ID: element.ID,
-                            Nombre: element.Nombre,
-                            Categoria: element.Categoria.Nombre,
-                            Valor1: element.Valor1,
-                            Valor2: element.Valor2,
-                        };
-                        producto.value.push(producto);
-                    });
+                    producto.value = response.data;
+                    nombre.value = response.data.Nombre;
+                    categorias.value = response.data.Categoria.Nombre;
+                    valor1.value = response.data.Valor1;
+                    valor2.value = response.data.Valor2;
+                    producto.value.push(producto);
                 })
                 .catch(err => {
+                    console.log(err);
+                })
+                .catch(err => {
+                    if (err.response.status === 404) {
+                        router.push("/productos");
+                    }
                     console.log(err);
                 });
         };
@@ -133,14 +146,25 @@ export default {
             return true;
         };
 
-        const openModal = (message) => {
+        const openModal = (message, callback = null) => {
             modalMessage.value = message;
+            dialogCallback.value = callback;
+            if (callback === null) {
+                dialogTitle.value = "Error";
+            }
+            else {
+                dialogTitle.value = "Éxito";
+            }
             displayModal.value = true;
         };
 
         const closeModal = () => {
             displayModal.value = false;
+            if (dialogCallback.value !== null && typeof dialogCallback.value === 'function') {
+                dialogCallback.value();
+            }
         };
+
 
         const modificarProducto = () => {
             let producto;
@@ -189,6 +213,12 @@ export default {
 
 
         return { 
+            nombre,
+            nombreError,
+            valor1,
+            valor1Error,
+            valor2,
+            valor2Error,
             categorias,
             getCategorias,
             getProducto,
@@ -199,9 +229,10 @@ export default {
             selectedCategoriaError,
             validar,
             displayModal,
-            modalMessage,
+            dialogTitle,
             openModal,
-            closeModal
+            closeModal,
+            error
         };
     }
 };
