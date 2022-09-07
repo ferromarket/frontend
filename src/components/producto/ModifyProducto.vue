@@ -32,15 +32,27 @@
                 </DropDown>
                 <label for="categoria">Categoría</label>
             </span>
+            <div class="field col-6">
+            <span class="p-float-label">
+                <InputText id="valor1" type="text" v-model="valor1" v-bind:class="{ 'p-invalid': valor1Error }" />
+                <label for="valor1">Valor </label>
+            </span>
+        </div>   
+        <div class="field col-6">
+            <span class="p-float-label">
+                <InputText id="valor2" type="text" v-model="valor2" v-bind:class="{ 'p-invalid': valor2Error }" />
+                <label for="valor2">Data</label>
+            </span>
+        </div>  
         <div class="field col-12 sm:col-3">
-            <ButtonComponent @click="modificarProductoClicked" class="ferro" label="Modificar categoria" icon="pi pi-check" iconPos="right" />
+            <ButtonComponent @click="modificarProductoClicked" class="ferro" label="Modificar producto" icon="pi pi-check" iconPos="right" />
         </div>
     </div>                    
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
 
@@ -50,6 +62,7 @@ export default {
             getCategorias();
         });
 
+        const router = useRouter();
         const route = useRoute();
 
         // si el puerto es 8080, no es con proxy
@@ -59,31 +72,43 @@ export default {
         const confirm = useConfirm();
         const displayModal = ref(false);
         const modalMessage = ref("");
+        const dialogCallback = ref();
+        const dialogTitle = ref("Error");
 
-        //const producto = ref();
+        const producto = ref();
 
+        const valor1 = ref();
+        const valor2 = ref();
         const nombre = ref("");
         const selectedCategoria = ref();
         const categorias = ref([]);
 
         const nombreError = ref(false);
         const selectedCategoriaError = ref(false);
+        const valor1Error = ref(false);
+        const valor2Error = ref(false);
+
+        const error = ref(false);
 
 
         const getProducto = () => {
             axios
-                .get(api + "/productos")
+                .get(api + "/producto/" + route.params.id)
                 .then((response) => {
-                    response.data.forEach(element => {
-                        let producto = {
-                            ID: element .ID,
-                            Nombre: element.Nombre,
-                            Categoria: element.Categoria.Nombre,
-                        };
-                        producto.value.push(producto);
-                    });
+                    producto.value = response.data;
+                    nombre.value = response.data.Nombre;
+                    categorias.value = response.data.Categoria.Nombre;
+                    valor1.value = response.data.Valor1;
+                    valor2.value = response.data.Valor2;
+                    producto.value.push(producto);
                 })
                 .catch(err => {
+                    console.log(err);
+                })
+                .catch(err => {
+                    if (err.response.status === 404) {
+                        router.push("/productos");
+                    }
                     console.log(err);
                 });
         };
@@ -121,14 +146,25 @@ export default {
             return true;
         };
 
-        const openModal = (message) => {
+        const openModal = (message, callback = null) => {
             modalMessage.value = message;
+            dialogCallback.value = callback;
+            if (callback === null) {
+                dialogTitle.value = "Error";
+            }
+            else {
+                dialogTitle.value = "Éxito";
+            }
             displayModal.value = true;
         };
 
         const closeModal = () => {
             displayModal.value = false;
+            if (dialogCallback.value !== null && typeof dialogCallback.value === 'function') {
+                dialogCallback.value();
+            }
         };
+
 
         const modificarProducto = () => {
             let producto;
@@ -177,6 +213,12 @@ export default {
 
 
         return { 
+            nombre,
+            nombreError,
+            valor1,
+            valor1Error,
+            valor2,
+            valor2Error,
             categorias,
             getCategorias,
             getProducto,
@@ -187,9 +229,10 @@ export default {
             selectedCategoriaError,
             validar,
             displayModal,
-            modalMessage,
+            dialogTitle,
             openModal,
-            closeModal
+            closeModal,
+            error
         };
     }
 };
