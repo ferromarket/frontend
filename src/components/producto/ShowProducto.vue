@@ -10,7 +10,7 @@
             </template>
             <template #title>
                 <div class="flex align-items-center justify-content-center">
-                    Ficha de producto
+                    Ficha del producto
                 </div>
                 <div class="flex align-items-center justify-content-center">
                 {{producto.Nombre}}
@@ -33,7 +33,7 @@
                 <div class="flex justify-content-center">
                 <ButtonComponent class="color justify-content-center"  icon="pi pi-pencil" label="Editar" @click="modifyProducto(slotProps.data)" />
                 <ButtonComponent icon="pi pi-trash" label="Borrar" class="color justify-content-center" style="margin-left: .5em" @click="confirmDeleteProducto(slotProps.data)" />
-                <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="VolverProducto()" />
+                <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="volverProducto()" />
                 </div>
 
             </template>
@@ -63,11 +63,15 @@ export default {
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
         const producto = ref({
             Nombre: "",
+            Categoria: "",
             Valor1: "",
             Valor2: "",
         }
         
     );
+        
+        const productos = ref([]);
+        
         const getProducto = () => {
             axios
                 .get(api + "/producto/" + route.params.id)
@@ -81,7 +85,13 @@ export default {
                     console.log(err);
                 });
         };
-
+        
+        const volverProducto = () => {
+            router.push("/producto/");
+        }
+        const modifyProducto = () => {
+            router.push("/producto/modificar/" + route.params.id);
+        }; 
         
         const confirmDeleteProducto = (producto) => {
             confirm.require({
@@ -91,12 +101,14 @@ export default {
                 acceptClass: 'p-button-danger',
                 accept: () => {
                     deleteProducto(producto);
+                    router.push("/producto/");
                 },
                 reject: () => {
                     console.log("rejected");
                 }
             });
         };
+
 
         const deleteProducto = (producto) => {
             axios
@@ -107,23 +119,16 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
-            producto.value = producto.value.filter(data => data.ID != producto.ID);
         };
-
-        const VolverProducto = () => {
-            router.push("/producto/");
-        }
-        const modifyProducto = (producto) => {
-            router.push("/producto/modificar/" + producto.ID);
-        }; 
 
         return {
             producto,
             getProducto,
+            productos,
             deleteProducto,
             confirmDeleteProducto,
             modifyProducto,
-            VolverProducto,
+            volverProducto,
         };
     }
 };
