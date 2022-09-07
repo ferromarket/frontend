@@ -69,6 +69,9 @@ export default {
                             ID: element.ID,
                             Nombre: element.Nombre,
                             Categoria: element.Categoria.Nombre,
+                            Valor1: element.Valor1,
+                            Valor2: element.Valor2,
+                            
                         };
                         productos.value.push(producto);
                     });
@@ -76,6 +79,10 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
+        };
+        
+        const showProducto = (event) => {
+            router.push("/producto/" + event.data.ID);
         };
 
         const createProducto = () => {
@@ -114,12 +121,15 @@ export default {
             productos.value = productos.value.filter(data => data.ID != producto.ID);
         };
 
+
+
         return {
             getProducto,
             createProducto,
             modifyProducto,
             confirmDeleteProducto,
             deleteProducto,
+            showProducto,
             productos,
             filters
         };

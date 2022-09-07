@@ -32,8 +32,20 @@
                 </DropDown>
                 <label for="categoria">Categoría</label>
             </span>
+            <div class="field col-6">
+            <span class="p-float-label">
+                <InputText id="valor1" type="text" v-model="valor1" v-bind:class="{ 'p-invalid': valor1Error }" />
+                <label for="valor1">Valor </label>
+            </span>
+        </div>   
+        <div class="field col-6">
+            <span class="p-float-label">
+                <InputText id="valor2" type="text" v-model="valor2" v-bind:class="{ 'p-invalid': valor2Error }" />
+                <label for="valor2">Data</label>
+            </span>
+        </div>  
         <div class="field col-12 sm:col-3">
-            <ButtonComponent @click="modificarProductoClicked" class="ferro" label="Modificar categoria" icon="pi pi-check" iconPos="right" />
+            <ButtonComponent @click="modificarProductoClicked" class="ferro" label="Modificar producto" icon="pi pi-check" iconPos="right" />
         </div>
     </div>                    
 </template>
@@ -60,8 +72,6 @@ export default {
         const displayModal = ref(false);
         const modalMessage = ref("");
 
-        //const producto = ref();
-
         const nombre = ref("");
         const selectedCategoria = ref();
         const categorias = ref([]);
@@ -72,13 +82,15 @@ export default {
 
         const getProducto = () => {
             axios
-                .get(api + "/productos")
+                .get(api + "/productos/" + route.params.id)
                 .then((response) => {
                     response.data.forEach(element => {
                         let producto = {
-                            ID: element .ID,
+                            ID: element.ID,
                             Nombre: element.Nombre,
                             Categoria: element.Categoria.Nombre,
+                            Valor1: element.Valor1,
+                            Valor2: element.Valor2,
                         };
                         producto.value.push(producto);
                     });
