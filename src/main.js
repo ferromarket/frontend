@@ -61,6 +61,9 @@ const ModifyUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_regis
 const ListUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ListUsuarioRegistrado.vue');
 const ShowUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ShowUsuarioRegistrado.vue');
 
+const ListCarro = () => import(/* webpackChunkName: "carro" */ './views/carro/ListCarro.vue');
+
+
 const routes = [
     {
         path: '/:pathMatch(.*)*',
@@ -229,6 +232,15 @@ const routes = [
         name: 'Modificar Usuario Registrado',
         components: {
             default: ModifyUsuarioRegistrado,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/carro',
+        name: 'Carro',
+        components: {
+            default: ListCarro,
             header: MainNavbar,
             footer: MainFooter
         }
