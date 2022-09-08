@@ -51,6 +51,14 @@ const CreateRepartidor = () => import(/* webpackChunkName: "repartidor" */ './vi
 const ListRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/ListRepartidor.vue');
 const EditarRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/EditarRepartidor.vue');
 
+// Vehiculo
+
+const PerfilVehiculo = () => import(/* webpackChunkName: "vehiculo" */ './views/vehiculo/PerfilVehiculo.vue');
+const CreateVehiculo = () => import(/* webpackChunkName: "vehiculo" */ './views/vehiculo/CreateVehiculo.vue');
+const ListVehiculo = () => import(/* webpackChunkName: "vehiculo" */ './views/vehiculo/ListVehiculo.vue');
+const EditarVehiculo = () => import(/* webpackChunkName: "vehiculo" */ './views/vehiculo/EditarVehiculo.vue');
+
+
 const ListProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ListProducto.vue');
 const CreateProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/CreateProducto.vue');
 const ModifyProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ModifyProducto.vue');
@@ -157,6 +165,42 @@ const routes = [
         name: 'Editar Repartidor',
         components: {
             default: EditarRepartidor,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/vehiculo/:id',
+        name: 'Vehiculo',
+        components: {
+            default: PerfilVehiculo,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/vehiculo/crear/:id',
+        name: 'Registrar Vehiculo',
+        components: {
+            default: CreateVehiculo,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/vehiculo/Listado',
+        name: 'Listado de Vehiculos',
+        components: {
+            default: ListVehiculo,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/vehiculo/Editar/:id',
+        name: 'Editar Vehiculo',
+        components: {
+            default: EditarVehiculo,
             header: MainNavbar,
             footer: MainFooter
         }
