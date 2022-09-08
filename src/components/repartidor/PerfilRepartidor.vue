@@ -21,7 +21,7 @@
                 RUT: {{repartidor.RUT}} 
                 </div>
                 <div class="flex align-items-center justify-content-center">
-                 Tipo de Licencia: {{repartidor.TipoLicencia}}
+                 Tipo de Licencia: {{repartidor.TipoLicencia}} {{vehiculo.Repartidor.Nombres}}
                 </div>
             </template>
             <template #content>
@@ -32,12 +32,13 @@
             <template #footer="slotProps">
                 <div class="flex justify-content-center">
                 <ButtonComponent class="color justify-content-center"  icon="pi pi-pencil" label="Editar" @click="editarRepartidor(slotProps.data)" />
-                <ButtonComponent icon="pi pi-trash" label="Borrar" class="color justify-content-center" style="margin-left: .5em" @click="confirmDeleteRepartidor(slotProps.data)" />
+                <ButtonComponent class="color justify-content-center"  icon="pi pi-pencil" label="Añadir Vehiculo" style="margin-left: .5em" @click="crearVehiculo(slotProps.data)" />
                 <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="VolverRepartidor()" />
                 </div>
-
             </template>
         </CardPanel>
+            <div>
+            </div>
         </div>
         </div>
 
@@ -50,8 +51,9 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/main';
-
 export default {
+
+    
 
     setup() {
         onMounted(() => {
@@ -100,43 +102,38 @@ export default {
             router.push("/repartidor/Editar/" + route.params.id);
         };
 
-
-            const confirmDeleteRepartidor = (repartidor) => {
-            confirm.require({
-                message: 'Estás seguro que quieres eliminar al repartidor "' + repartidor.Nombres + '"?',
-                header: 'Confirmación',
-                icon: 'pi pi-exclamation-triangle',
-                acceptClass: 'p-button-danger',
-                accept: () => {
-                    deleteRepartidor(repartidor);
-                    router.push({name: "Listado de Repartidores"});
-                },
-                reject: () => {
-                    console.log("rejected");
-                }
-            });
+        const crearVehiculo = () => {
+            router.push("/vehiculo/crear/" + route.params.id);
         };
 
-        const deleteRepartidor = (repartidor) => {
-            axios
-                .delete(api + "/repartidor/" + repartidor.ID)
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+        const vehiculo = ref({
+            Repartidor: {
+                Nombres: "",
+            },
+            Marca: "",
+            Modelo: "",
+            Ano: "",
+            PermisoCirculacion: "",
+            Patente: "",
+            Seguro: "",
+            TipoLicencia: "",
+            }
+        );
+
+
+
+
             
-        };
+
 
         return {
+            crearVehiculo,
             repartidor,
             getRepartidor,
             repartidores,
-            deleteRepartidor,
-            confirmDeleteRepartidor,
             editarRepartidor,
-            VolverRepartidor
+            VolverRepartidor,
+            vehiculo,
         };
     }
 };

@@ -65,6 +65,10 @@ export default {
                     {
                         label: 'Mi carro',
                         to: '/carro',
+                    },
+                    {
+                        label: 'Vehiculos',
+                        to: '/vehiculo/Listado',
                     }
                 ]
             }
