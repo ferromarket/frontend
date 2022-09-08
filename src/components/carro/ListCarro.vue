@@ -5,28 +5,21 @@
             stripedRows
             paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
             :rowsPerPageOptions="[10,20,50]"
-            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
-            filterDisplay="menu"
-            :globalFilterFields="['Nombre', 'Categoria']">
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}">
         <template #header>
             <div class="flex justify-content-between">
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search" />
-                    <InputText v-model="filters['global'].value" placeholder="Filtrar" />
-                </span>
-                <ButtonComponent @click="createProducto" class="ferro" label="Nuevo" icon="pi pi-plus" iconPos="right" />
             </div>
         </template>
         <DataColumn field="Nombre" header="Nombre" :sortable="true"></DataColumn>
-        <DataColumn field="Categoria" header="Categoria" :sortable="true"></DataColumn>
-        <DataColumn field="EspecifacionNombre" header="Marca" :sortable="true"></DataColumn>
-        <DataColumn field="EspecifacionData" header="Detalle" :sortable="true"></DataColumn>
+        <DataColumn field="Cantidad" header="Cantidad" :sortable="true"></DataColumn>
+        <DataColumn field="Ferreteria" header="Ferreteria" :sortable="true"></DataColumn>
+        <DataColumn field="Precio" header="Precio" :sortable="true"></DataColumn>
 
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
-                <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyProducto(slotProps.data)" />
-                <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProducto(slotProps.data)" />
-                <ButtonComponent icon="pi pi-eye" class="p-button-rounded p-button-info " @click="showProducto(slotProps.data)" />
+                <ButtonComponent icon="pi pi-plus" class="p-button-rounded p-button-success mr-2"  />
+                <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProducto(slotProps.data)"  />
+                <ButtonComponent icon="pi pi-eye" class="p-button-rounded p-button-info " @click="showProducto(slotProps.data)"  />
 
             </template>
         </DataColumn>

@@ -136,6 +136,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
+import auth from "../../utils/auth";
 
 export default {
     setup() {
@@ -339,7 +340,7 @@ export default {
                     Direccion: direccion.value,
                     ComunaID: selectedComuna.value.ID,
                     Horarios: horarios
-                })
+                }, auth.getTokenHeader())
                 .then(function (response) {
                     if (response !== null && response.status == 200) {
                         openModal("Ferretería modificada exitosamente!", redirect);
