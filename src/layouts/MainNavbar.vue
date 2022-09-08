@@ -61,6 +61,10 @@ export default {
                     {
                         label: 'Repartidores',
                         to: '/repartidor/Listado',
+                    },
+                    {
+                        label: 'Vehiculos',
+                        to: '/vehiculo/Listado',
                     }
                 ]
             }
