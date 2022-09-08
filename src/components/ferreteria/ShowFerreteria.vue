@@ -54,17 +54,7 @@ export default {
         const ferreteria = ref({
             Nombre: "",
             Descripcion: "",
-            Direccion: "",
-            Comuna: {
-                Nombre: "",
-                Ciudad: {
-                    Nombre: "",
-                    Region: {
-                        Nombre: ""
-                    }
-                }
-            },
-            Horarios: []
+
         });
 
         const getFerreteria = () => {
