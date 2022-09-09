@@ -88,6 +88,9 @@
         <div class="field col-12 sm:col-3">
             <ButtonComponent @click="editarRepartidorClicked" class="repartidor" label="Editar" icon="pi pi-check" iconPos="right" />
         </div>
+        <div class="field col-12 sm:col-3">
+            <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="Volver()" />
+        </div>
     </div>                    
 </template>
 
@@ -322,7 +325,14 @@ export default {
                 const redirect = () => {
             router.push({name: "Repartidor"});
         };
-        return {             
+
+        const Volver = () => {
+            router.push({name: "Listado de Repartidores"});
+        }
+
+        
+        return { 
+            Volver,            
             rut,
             rutError,
             contrasena,
@@ -366,6 +376,14 @@ export default {
     color: var(--surface-0) !important;
 }
 .repartidor:hover {
+    background: var(--orange-500) !important;
+    color: var(--surface-0) !important;
+}
+::v-deep(.color) {
+    background: var(--orange-400) !important;
+    color: var(--surface-0) !important;
+}
+.color:hover {
     background: var(--orange-500) !important;
     color: var(--surface-0) !important;
 }
