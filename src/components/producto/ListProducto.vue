@@ -2,12 +2,14 @@
     <ConfirmDialog/>
     <DataTable :value="productos" dataKey="ID" responsiveLayout="scroll" :paginator="true" :rows="10"
             v-model:filters="filters"
+            selectionMode="single"
+            @rowSelect="rowSelected"
             stripedRows
             paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
             :rowsPerPageOptions="[10,20,50]"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
             filterDisplay="menu"
-            :globalFilterFields="['Nombre', 'Categoria']">
+            :globalFilterFields="['Nombre', 'Categoria', 'Marca', 'Detalle']">
         <template #header>
             <div class="flex justify-content-between">
                 <span class="p-input-icon-left">
@@ -19,15 +21,13 @@
         </template>
         <DataColumn field="Nombre" header="Nombre" :sortable="true"></DataColumn>
         <DataColumn field="Categoria" header="Categoria" :sortable="true"></DataColumn>
-        <DataColumn field="EspecifacionNombre" header="Marca" :sortable="true"></DataColumn>
-        <DataColumn field="EspecifacionData" header="Detalle" :sortable="true"></DataColumn>
+        <DataColumn field="Marca" header="Marca" :sortable="true"></DataColumn>
+        <DataColumn field="Detalle" header="Detalle" :sortable="true"></DataColumn>
 
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyProducto(slotProps.data)" />
                 <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProducto(slotProps.data)" />
-                <ButtonComponent icon="pi pi-eye" class="p-button-rounded p-button-info " @click="showProducto(slotProps.data)" />
-
             </template>
         </DataColumn>
     </DataTable>
@@ -47,7 +47,6 @@ export default {
         });
 
         const router = useRouter();
-
         const confirm = useConfirm();
 
         // si el puerto es 8080, no es con proxy
@@ -60,6 +59,10 @@ export default {
             'global': {value: null, matchMode: FilterMatchMode.CONTAINS}
         });
 
+        const rowSelected = (event) => {
+            router.push("/producto/:" + event.data.ID);
+        };
+
         const getProducto = () => {
             axios
                 .get(api + "/productos")
@@ -69,9 +72,8 @@ export default {
                             ID: element.ID,
                             Nombre: element.Nombre,
                             Categoria: element.Categoria.Nombre,
-                            Valor1: element.Valor1,
-                            Valor2: element.Valor2,
-                            
+                            Marca: element.Valor1,
+                            Detalle: element.Valor2,                          
                         };
                         productos.value.push(producto);
                     });
@@ -81,10 +83,6 @@ export default {
                 });
         };
         
-        const showProducto = (event) => {
-            router.push("/producto/:" + event.data);
-        };
-
         const createProducto = () => {
             router.push({name: "Crear Producto"});
             //router.push("/producto/crear");
@@ -129,7 +127,7 @@ export default {
             modifyProducto,
             confirmDeleteProducto,
             deleteProducto,
-            showProducto,
+            rowSelected,
             productos,
             filters
         };

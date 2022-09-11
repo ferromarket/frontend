@@ -32,7 +32,6 @@
             <template #footer="slotProps">
                 <div class="flex justify-content-center">
                 <ButtonComponent class="color justify-content-center"  icon="pi pi-pencil" label="Editar" @click="modifyProducto(slotProps.data)" />
-                <ButtonComponent icon="pi pi-trash" label="Borrar" class="color justify-content-center" style="margin-left: .5em" @click="confirmDeleteProducto(slotProps.data)" />
                 <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="volverProducto()" />
                 </div>
 
@@ -61,15 +60,14 @@ export default {
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
+
         const producto = ref({
             Nombre: "",
             Categoria: "",
             Valor1: "",
             Valor2: "",
-        }
-        
-    );
-        
+        });
+
         const productos = ref([]);
         
         const getProducto = () => {
@@ -80,7 +78,7 @@ export default {
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        router.push("/productos");
+                        router.push("/producto");
                     }
                     console.log(err);
                 });
@@ -92,41 +90,11 @@ export default {
         const modifyProducto = () => {
             router.push("/producto/modificar/" + route.params.id);
         }; 
-        
-        const confirmDeleteProducto = (producto) => {
-            confirm.require({
-                message: 'Estás seguro que quieres eliminar "' + producto.Nombre + '" de la lista?',
-                header: 'Confirmación',
-                icon: 'pi pi-exclamation-triangle',
-                acceptClass: 'p-button-danger',
-                accept: () => {
-                    deleteProducto(producto);
-                    router.push("/producto/");
-                },
-                reject: () => {
-                    console.log("rejected");
-                }
-            });
-        };
-
-
-        const deleteProducto = (producto) => {
-            axios
-                .delete(api + "/producto/" + producto.ID)
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        };
 
         return {
             producto,
-            getProducto,
             productos,
-            deleteProducto,
-            confirmDeleteProducto,
+            getProducto,
             modifyProducto,
             volverProducto,
         };
