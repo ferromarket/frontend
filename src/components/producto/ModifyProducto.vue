@@ -186,7 +186,7 @@ export default {
                 })
                 .then(function (response) {
                     if (response !== null && response.status == 200) {
-                        openModal("Producto modificada exitosamente!", redirect);
+                        openModal("Producto modificado exitosamente!", redirect);
                     }
                     else {
                         console.log(response);
@@ -201,11 +201,11 @@ export default {
             router.push({name: "Mostrar producto"});
         };
 
+
         const getCategorias = (id) => {
             if (id === null) {
                 id = selectedCategoria.value.ID
             }
-            selectedCategoria.value = null;
             categorias.value = [];
             axios
                 .get(api + "/categorias")

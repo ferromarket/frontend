@@ -60,12 +60,15 @@ export default {
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
-        const productos = ref([]);
+
         const producto = ref({
             Nombre: "",
+            Categoria: "",
             Valor1: "",
             Valor2: "",
         });
+
+        const productos = ref([]);
         
         const getProducto = () => {
             axios
@@ -75,7 +78,7 @@ export default {
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        router.push("/productos");
+                        router.push("/producto");
                     }
                     console.log(err);
                 });
