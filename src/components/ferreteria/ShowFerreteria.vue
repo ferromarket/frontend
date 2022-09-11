@@ -65,8 +65,6 @@ export default {
                 }
             },
             Horarios: []
-
-
         });
 
         const getFerreteria = () => {
