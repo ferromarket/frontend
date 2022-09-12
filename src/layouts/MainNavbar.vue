@@ -63,7 +63,7 @@ export default {
                         to: '/repartidor/Listado',
                     },
                     {
-                        label: 'Mi carro',
+                        label: 'Carro usuarios',
                         to: '/carro',
                     },
                     {

@@ -100,7 +100,7 @@ export default {
                     valor1.value = response.data.Valor1;
                     valor2.value = response.data.Valor2;
                     categorias.value.forEach(element => {
-                        if (element.ID == response.data.CategoriaID) {
+                        if (element.ID == response.data.producto) {
                             selectedCategoria.value = element;
                         }
                     });
@@ -173,14 +173,13 @@ export default {
             let categorias = [];
             producto.value.Categorias.forEach(element => {
                 categorias.push({
-                    ID: element.ID,
-                    CategoriaID: element.CategoriaID,
+                    CategoriaID: element.ID
                 });
             });
             axios
                 .patch(api + "/producto/" + route.params.id, {
                     Nombre: nombre.value,
-                    Categorias: categorias,
+                    CategoriaID: categorias,
                     Valor1: valor1.value,
                     Valor2: valor2.value
                 })
