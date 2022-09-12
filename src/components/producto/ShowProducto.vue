@@ -12,16 +12,15 @@
                 <div class="flex align-items-center justify-content-center">
                     Ficha del producto
                 </div>
-                <div class="flex align-items-center justify-content-center">
-                {{producto.Nombre}}
-                </div>
             </template>
             <template #subtitle>
                 <div class="flex align-items-center justify-content-center">
-                Categoria: {{}} 
+                <strong>Nombre:</strong>     {{producto.Nombre}}
                 </div>
                 <div class="flex align-items-center justify-content-center">
-                Data {{producto.Valor1}}
+                </div>
+                <div class="flex align-items-center justify-content-center">
+                <strong>Marca:</strong>     {{producto.Valor1}}
                 </div>
             </template>
             <template #content>
@@ -63,7 +62,9 @@ export default {
 
         const producto = ref({
             Nombre: "",
-            Categoria: "",
+            Categoria: {
+                Nombre: "",
+            },
             Valor1: "",
             Valor2: "",
         });
@@ -88,7 +89,7 @@ export default {
             router.push("/producto/");
         }
         const modifyProducto = () => {
-            router.push("/producto/modificar/" + route.params.id);
+            router.push("/producto/modificar/" +  route.params.id);
         }; 
 
         return {
