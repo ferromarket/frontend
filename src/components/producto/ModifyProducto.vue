@@ -170,16 +170,9 @@ export default {
 
 
         const modificarProducto = () => {
-            let categorias = [];
-            producto.value.Categorias.forEach(element => {
-                categorias.push({
-                    CategoriaID: element.ID
-                });
-            });
             axios
                 .patch(api + "/producto/" + route.params.id, {
                     Nombre: nombre.value,
-                    CategoriaID: categorias,
                     Valor1: valor1.value,
                     Valor2: valor2.value
                 })
