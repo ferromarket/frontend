@@ -60,7 +60,7 @@ export default {
         });
 
         const rowSelected = (event) => {
-            router.push("/producto/:" + event.data.ID);
+            router.push("/producto/" + event.data.ID);
         };
 
         const getProducto = () => {
