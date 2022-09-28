@@ -72,6 +72,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
+import { Buffer } from 'buffer';
 
 export default {
     setup() {
@@ -160,7 +161,7 @@ export default {
             axios
                 .post(api + "/usuario", {
                 RUT:rut.value,
-                Contrasena:contrasena.value,
+                Contrasena:Buffer.from(contrasena.value).toString('base64'),
                 Email:email.value,
                 Nombres: nombre.value,
                 ApellidoPaterno: apellidoP.value,
