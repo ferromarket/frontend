@@ -61,6 +61,14 @@ export default {
                     {
                         label: 'Repartidores',
                         to: '/repartidor/Listado',
+                    },
+                    {
+                        label: 'Carro usuarios',
+                        to: '/carro',
+                    },
+                    {
+                        label: 'Vehiculos',
+                        to: '/vehiculo/Listado',
                     }
                 ]
             }

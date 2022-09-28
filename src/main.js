@@ -51,6 +51,14 @@ const CreateRepartidor = () => import(/* webpackChunkName: "repartidor" */ './vi
 const ListRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/ListRepartidor.vue');
 const EditarRepartidor = () => import(/* webpackChunkName: "repartidor" */ './views/repartidor/EditarRepartidor.vue');
 
+// Vehiculo
+
+const PerfilVehiculo = () => import(/* webpackChunkName: "vehiculo" */ './views/vehiculo/PerfilVehiculo.vue');
+const CreateVehiculo = () => import(/* webpackChunkName: "vehiculo" */ './views/vehiculo/CreateVehiculo.vue');
+const ListVehiculo = () => import(/* webpackChunkName: "vehiculo" */ './views/vehiculo/ListVehiculo.vue');
+const EditarVehiculo = () => import(/* webpackChunkName: "vehiculo" */ './views/vehiculo/EditarVehiculo.vue');
+
+
 const ListProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ListProducto.vue');
 const CreateProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/CreateProducto.vue');
 const ModifyProducto = () => import(/* webpackChunkName: "producto" */ './views/producto/ModifyProducto.vue');
@@ -60,6 +68,9 @@ const CreateUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_regis
 const ModifyUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ModifyUsuarioRegistrado.vue');
 const ListUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ListUsuarioRegistrado.vue');
 const ShowUsuarioRegistrado = () => import(/* webpackChunkName: "usuario_registrado" */ './views/usuario_registrado/ShowUsuarioRegistrado.vue');
+
+const ListCarro = () => import(/* webpackChunkName: "carro" */ './views/carro/ListCarro.vue');
+
 
 const routes = [
     {
@@ -162,6 +173,42 @@ const routes = [
         }
     },
     {
+        path: '/vehiculo/:id',
+        name: 'Vehiculo',
+        components: {
+            default: PerfilVehiculo,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/vehiculo/crear/:id',
+        name: 'Registrar Vehiculo',
+        components: {
+            default: CreateVehiculo,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/vehiculo/Listado',
+        name: 'Listado de Vehiculos',
+        components: {
+            default: ListVehiculo,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/vehiculo/Editar/:id',
+        name: 'Editar Vehiculo',
+        components: {
+            default: EditarVehiculo,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
         path: '/producto',
         name: 'Productos',
         components: {
@@ -229,6 +276,15 @@ const routes = [
         name: 'Modificar Usuario Registrado',
         components: {
             default: ModifyUsuarioRegistrado,
+            header: MainNavbar,
+            footer: MainFooter
+        }
+    },
+    {
+        path: '/carro',
+        name: 'Carro',
+        components: {
+            default: ListCarro,
             header: MainNavbar,
             footer: MainFooter
         }

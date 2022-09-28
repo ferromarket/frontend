@@ -36,14 +36,14 @@
         <!-- Ingreso de data -->
         <div class="field col-6">
             <span class="p-float-label">
-                <InputText id="espnombre" type="text" v-model="espnombre" v-bind:class="{ 'p-invalid': espnombreError }" />
-                <label for="espnombre">Nombre especificación</label>
+                <InputText id="valor1" type="text" v-model="valor1" v-bind:class="{ 'p-invalid': valor1Error }" />
+                <label for="valor1">Valor </label>
             </span>
         </div>   
         <div class="field col-6">
             <span class="p-float-label">
-                <InputText id="valor" type="text" v-model="valor" v-bind:class="{ 'p-invalid': valorError }" />
-                <label for="valor">Data</label>
+                <InputText id="valor2" type="text" v-model="valor2" v-bind:class="{ 'p-invalid': valor2Error }" />
+                <label for="valor2">Data</label>
             </span>
         </div>    
         <div class="field col-12 sm:col-2">
@@ -56,6 +56,7 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useConfirm } from "primevue/useconfirm";
+import { useRouter } from 'vue-router';
 
 export default {
     setup() {
@@ -63,7 +64,7 @@ export default {
             getCategorias();
 
         });
-
+        const router = useRouter();
         // si el puerto es 8080, no es con proxy
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
@@ -71,15 +72,15 @@ export default {
         const confirm = useConfirm();
         const displayModal = ref(false);
         const modalMessage = ref("");
-
         const nombre = ref("");
+        const valor1 = ref("");
+        const valor2 = ref("");
         const selectedCategoria = ref();
         const categorias = ref([]);
-        //const espnombre = ref("");
-        //const valor = ref("");
-
         const nombreError = ref(false);
         const selectedCategoriaError = ref(false);
+        const valor1Error = ref(false);
+        const valor2Error = ref(false);
 
         const crearProductoClicked = () => {
             if (validar()) {
@@ -101,6 +102,8 @@ export default {
         const validar = () => {
             nombreError.value = false;
             selectedCategoriaError.value = false;
+            valor1Error.value = false;
+            valor1Error.value = false;
             if (nombre.value.trim() === "") {
                 nombreError.value = true;
                 openModal("Falta nombre de producto");
@@ -109,6 +112,16 @@ export default {
             if (selectedCategoria.value === null) {
                 selectedCategoriaError.value = true;
                 openModal("Falta seleccionar una categoria");
+                return false;
+            }
+            if ( valor1.value.trim() === "") {
+                valor1Error.value = true;
+                openModal("Falta escribir una Valor al producto");
+                return false;
+            }
+            if ( valor2Error.value === null) {
+                valor2Error.value = true;
+                openModal("Falta escribir una especificación");
                 return false;
             }
             return true;
@@ -128,17 +141,24 @@ export default {
                 .post(api + "/producto", {
                     Nombre: nombre.value,
                     CategoriaID: selectedCategoria.value.ID,
-                   // EspecificacionNombre: EspecificacionNombre.Nombre.value,
-                  //  EspecificacionData: EspecificacionData.Valor.value,
+                    Valor1: valor1.value,
+                    Valor2: valor2.value,
                 })
                 .then(function (response) {
-                    if (response !== null && response.status != 204) {
+                    if (response !== null && response.status === 204) {
+                        openModal("Producto creado exitosamente!", redirect);
+                    }
+                    else {
                         console.log(response);
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+        };
+
+        const redirect = (id) => {
+            router.push("/producto/" + id);
         };
 
         const getCategorias = () => {
@@ -156,9 +176,13 @@ export default {
 
         return { nombre,
             nombreError,
+            valor1,
+            valor2,
             selectedCategoria,
             selectedCategoriaError,
             crearProductoClicked,
+            valor1Error,
+            valor2Error,
             getCategorias,
             categorias,
             crearProducto,

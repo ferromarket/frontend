@@ -9,7 +9,7 @@
     <div class="w-full justify-content-center p-fluid grid">
             <div class="field col-12">
                 <span class="p-float-label">
-                <InputMask mask="999999999" v-model="rut" v-bind:class="{ 'p-invalid': rutError }"  />
+                <InputMask mask="99.999.999-*" v-model="rut" v-bind:class="{ 'p-invalid': rutError }"  />
                 <label for="rut">Rut</label>
                 </span>
             </div>
@@ -84,10 +84,12 @@
                 </span>
             </div>
         
-        <div class="field col-12">
+        <div class="field col-12 sm:col-3">
             <ButtonComponent @click="crearRepartidorClicked" class="repartidor" label="Crear" icon="pi pi-check" iconPos="right" />
         </div>
-        
+        <div class="field col-12 sm:col-3">
+            <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="Volver()" />
+        </div>
     </div>                    
 </template>
 
@@ -118,7 +120,8 @@ export default {
         const confirm = useConfirm();
         const displayModal = ref(false);
         const modalMessage = ref("");
-        let today;
+        const dialogCallback = ref();
+        const dialogTitle = ref("Error");
         const rut = ref("");
         const contrasena = ref("");
         const email = ref("");
@@ -182,6 +185,12 @@ export default {
                 openModal("Falta el rut del repartidor a registrar!");
                 return false;
             }
+            const Udigito = rut.value.slice(-1);   
+            if (Udigito != "k" && isNaN(Udigito)) {
+                rutError.value = true;
+                openModal("El digitio verificador solo puede ser k o un numero!");
+                return false;
+            }
             if (contrasena.value.trim() === "") {
                 contrasenaError.value = true;
                 openModal("Falta la contraseña del repartidor a registrar!");
@@ -233,7 +242,7 @@ export default {
                 openModal("Falta el tipo de licencia del repartidor a registrar!");
                 return false;
             }
-            if (fechaLicencia.value >= today ) {
+            if (fechaLicencia.value === "" ) {
                 fechaLicenciaError.value = true;
                 openModal("La fecha del control de la licencia tiene que estar habilitada del repartidor a registrar!");
                 return false;
@@ -241,14 +250,26 @@ export default {
             return true;
         };
 
-        const openModal = (message) => {
+        const openModal = (message, callback = null) => {
             modalMessage.value = message;
+            dialogCallback.value = callback;
+            if (callback === null) {
+                dialogTitle.value = "Error";
+            }
+            else {
+                dialogTitle.value = "Proceso Completado";
+            }
             displayModal.value = true;
         };
 
         const closeModal = () => {
             displayModal.value = false;
+            if (dialogCallback.value !== null && typeof dialogCallback.value === 'function') {
+                dialogCallback.value();
+            }
         };
+
+
 
         const crearRepartidor = () => {
             axios
@@ -267,7 +288,7 @@ export default {
                            })
                 .then(function (response) {
                     if (response !== null && response.status === 200) {
-                        openModal("Repartidor registrado exitosamente!", redirect, response.data.ID);
+                        openModal("Repartidor registrado exitosamente!", redirect);
                     }
                     else {
                         console.log(response);
@@ -278,13 +299,21 @@ export default {
                 });
         };
 
-        const redirect = (id) => {
-            router.push("/repartidor/" + id);
+        const redirect = () => {
+            router.push({name: "Repartidor"});
         };
+        const Volver = () => {
+            router.push({name: "Listado de Repartidores"});
+        }
+
+
         
 
 
-        return { rut,
+        return { 
+            dialogCallback,
+            dialogTitle,
+            rut,
             rutError,
             contrasena,
             contrasenaError,
@@ -313,6 +342,8 @@ export default {
             modalMessage,
             openModal,
             closeModal,
+            Volver,
+            
         };
     }
 };
@@ -326,6 +357,15 @@ export default {
     color: var(--surface-0) !important;
 }
 .repartidor:hover {
+    background: var(--orange-500) !important;
+    color: var(--surface-0) !important;
+}
+
+::v-deep(.color) {
+    background: var(--orange-400) !important;
+    color: var(--surface-0) !important;
+}
+.color:hover {
     background: var(--orange-500) !important;
     color: var(--surface-0) !important;
 }

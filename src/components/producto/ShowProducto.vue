@@ -1,24 +1,45 @@
 <template>
-    <CardPanel class="flex justify-content-center sm:col-4 sm:col-offset-4">
-        <template #title>
-            <div class="flex justify-content-center flex-wrap card-container">
-                <h2>{{ producto.Nombre }}</h2>
-            </div>
-        </template>
-        <template #content>
-            <div class="w-full justify-content-center p-fluid grid">
-                <div class="field col-12">
-                    {{ producto.Categoria }}
+<div class="card ">
+    <div class="flex m-2 flex-wrap-reverse md:flex-wrap card-container orange-container justify-content-center" style="max-width: 100%">
+        <div class="flex align-items-center justify-content-center bg-orange-400 font-bold text-white m-2 border-round" style="min-width: 40%; min-height: 30%">
+        <CardPanel style="width: 25em">
+            <template #header>
+                <div class="flex align-items-center justify-content-center">
+                <img src="../../assets/AvatarProducto.png" style="height: 60%; width: 60%;" />
                 </div>
-                <div class="field col-12">
-                    <strong>Marca:</strong> 
+            </template>
+            <template #title>
+                <div class="flex align-items-center justify-content-center">
+                    Ficha del producto
                 </div>
-                <div class="col-12">
-                    <strong>Detalle:</strong> 
+            </template>
+            <template #subtitle>
+                <div class="flex align-items-center justify-content-center">
+                <strong>Nombre:</strong>     {{producto.Nombre}}
                 </div>
-            </div>
-        </template>
-    </CardPanel>
+                <div class="flex align-items-center justify-content-center">
+                </div>
+                <div class="flex align-items-center justify-content-center">
+                <strong>Marca:</strong>     {{producto.Valor1}}
+                </div>
+            </template>
+            <template #content>
+                <p>
+
+                </p>
+            </template>
+            <template #footer="slotProps">
+                <div class="flex justify-content-center">
+                <ButtonComponent class="color justify-content-center"  icon="pi pi-pencil" label="Editar" @click="modifyProducto(slotProps.data)" />
+                <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="volverProducto()" />
+                </div>
+
+            </template>
+        </CardPanel>
+        </div>
+        </div>
+
+</div>
 </template>
 
 <script>
@@ -41,26 +62,42 @@ export default {
 
         const producto = ref({
             Nombre: "",
-            Categoria: "",
+            Categoria: {
+                Nombre: "",
+            },
+            Valor1: "",
+            Valor2: "",
         });
 
+        const productos = ref([]);
+        
         const getProducto = () => {
             axios
-                .get(api + "/productos" + route.params.id)
+                .get(api + "/producto/" + route.params.id)
                 .then((response) => {
                     producto.value = response.data;
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
-                        router.push("/productos");
+                        router.push("/producto");
                     }
                     console.log(err);
                 });
         };
+        
+        const volverProducto = () => {
+            router.push("/producto/");
+        }
+        const modifyProducto = () => {
+            router.push("/producto/modificar/" +  route.params.id);
+        }; 
 
         return {
             producto,
-            getProducto
+            productos,
+            getProducto,
+            modifyProducto,
+            volverProducto,
         };
     }
 };

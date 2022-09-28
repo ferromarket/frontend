@@ -1,6 +1,6 @@
 <template>
     <ConfirmDialog/>
-    <DataTable :value="productos" dataKey="ID" responsiveLayout="scroll" :paginator="true" :rows="10"
+    <DataTable :value="vehiculos" dataKey="ID" responsiveLayout="scroll" :paginator="true" :rows="10"
             v-model:filters="filters"
             selectionMode="single"
             @rowSelect="rowSelected"
@@ -9,25 +9,23 @@
             :rowsPerPageOptions="[10,20,50]"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords}"
             filterDisplay="menu"
-            :globalFilterFields="['Nombre', 'Categoria', 'Marca', 'Detalle']">
+            :globalFilterFields="['Marca', 'Modelo', 'Ano', 'Patente']">
         <template #header>
             <div class="flex justify-content-between">
                 <span class="p-input-icon-left">
                     <i class="pi pi-search" />
                     <InputText v-model="filters['global'].value" placeholder="Filtrar" />
                 </span>
-                <ButtonComponent @click="createProducto" class="ferro" label="Nuevo" icon="pi pi-plus" iconPos="right" />
             </div>
         </template>
-        <DataColumn field="Nombre" header="Nombre" :sortable="true"></DataColumn>
-        <DataColumn field="Categoria" header="Categoria" :sortable="true"></DataColumn>
         <DataColumn field="Marca" header="Marca" :sortable="true"></DataColumn>
-        <DataColumn field="Detalle" header="Detalle" :sortable="true"></DataColumn>
-
+        <DataColumn field="Modelo" header="Modelo" :sortable="true"></DataColumn>
+        <DataColumn field="Ano" header="Año" :sortable="true"></DataColumn>
+        <DataColumn field="Patente" header="Patente" :sortable="true"></DataColumn>
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
-                <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyProducto(slotProps.data)" />
-                <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger mr-2" @click="confirmDeleteProducto(slotProps.data)" />
+                <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="editarVehiculo(slotProps.data)" />
+                <ButtonComponent icon="pi pi-trash" class="p-button-rounded p-button-danger" @click="confirmDeleteVehiculo(slotProps.data)" />
             </template>
         </DataColumn>
     </DataTable>
@@ -43,7 +41,7 @@ import axios from 'axios';
 export default {
     setup() {
         onMounted(() => {
-            getProducto();
+            getVehiculos();
         });
 
         const router = useRouter();
@@ -53,53 +51,58 @@ export default {
         const url = new URL(window.location.href);
         const api = (url.port == "8080") ? "http://localhost:3001" : "/api";
 
-        const productos = ref([]);
+        const vehiculos = ref([]);
 
         const filters = ref({
-            'global': {value: null, matchMode: FilterMatchMode.CONTAINS}
+            'global': { value: null, matchMode: FilterMatchMode.CONTAINS }
         });
 
         const rowSelected = (event) => {
-            router.push("/producto/" + event.data.ID);
+           router.push("/vehiculo/" + event.data.ID);
         };
 
-        const getProducto = () => {
+
+        const getVehiculos = () => {
             axios
-                .get(api + "/productos")
+                .get(api + "/vehiculos")
                 .then((response) => {
                     response.data.forEach(element => {
-                        let producto = {
+                        let vehiculo = {
                             ID: element.ID,
-                            Nombre: element.Nombre,
-                            Categoria: element.Categoria.Nombre,
-                            Marca: element.Valor1,
-                            Detalle: element.Valor2,                          
+                            CreatedAt: element.CreatedAt ,
+                            Marca: element.Marca,
+                            Modelo: element.Modelo,
+                            Ano: element.Ano,
+                            Patente: element.Patente,
+
+
                         };
-                        productos.value.push(producto);
+                        vehiculos.value.push(vehiculo);
                     });
                 })
+               
                 .catch(err => {
                     console.log(err);
                 });
         };
-        
-        const createProducto = () => {
-            router.push({name: "Crear Producto"});
-            //router.push("/producto/crear");
+
+        const createVehiculo = () => {
+            router.push({name: "Registrar Vehiculo"});
+            //router.push("/repartidor/crear");
         };
 
-        const modifyProducto = (producto) => {
-            router.push("/producto/modificar/" + producto.ID);
-        }; 
+        const editarVehiculo = (vehiculo) => {
+            router.push("/vehiculo/Editar/" + vehiculo.ID);
+        };
 
-        const confirmDeleteProducto = (producto) => {
+        const confirmDeleteVehiculo = (vehiculo) => {
             confirm.require({
-                message: 'Estás seguro que quieres eliminar "' + producto.Nombre + '" de la lista?',
+                message: 'Estás seguro que quieres eliminar al vehiculo "' + vehiculo.Patente + '"?',
                 header: 'Confirmación',
                 icon: 'pi pi-exclamation-triangle',
                 acceptClass: 'p-button-danger',
                 accept: () => {
-                    deleteProducto(producto);
+                    deleteVehiculo(vehiculo);
                 },
                 reject: () => {
                     console.log("rejected");
@@ -107,40 +110,40 @@ export default {
             });
         };
 
-        const deleteProducto = (producto) => {
+        const deleteVehiculo = (vehiculo) => {
             axios
-                .delete(api + "/producto/" + producto.ID)
+                .delete(api + "/vehiculo/" + vehiculo.ID)
                 .then((response) => {
                     console.log(response);
                 })
                 .catch(err => {
                     console.log(err);
                 });
-            productos.value = productos.value.filter(data => data.ID != producto.ID);
+                vehiculos.value = vehiculos.value.filter(data => data.ID != vehiculo.ID);
         };
 
-
-
         return {
-            getProducto,
-            createProducto,
-            modifyProducto,
-            confirmDeleteProducto,
-            deleteProducto,
-            rowSelected,
-            productos,
-            filters
+
+            getVehiculos,
+            createVehiculo,
+            editarVehiculo,
+            confirmDeleteVehiculo,
+            deleteVehiculo,
+            vehiculos,
+            filters,
+            rowSelected
+            
         };
     }
 };
 </script>
 
 <style scoped lang="scss">
-::v-deep(.ferro) {
+::v-deep(.vehiculo) {
     background: var(--orange-400) !important;
     color: var(--surface-0) !important;
 }
-.ferro:hover {
+.vehiculo:hover {
     background: var(--orange-500) !important;
     color: var(--surface-0) !important;
 }

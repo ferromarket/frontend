@@ -9,7 +9,7 @@
     <div class="w-full justify-content-center p-fluid grid">
             <div class="field col-12">
                 <span class="p-float-label">
-                <InputMask mask="999999999" v-model="rut" v-bind:class= "{ 'p-invalid': rutError }"  />
+                <InputMask mask="99.999.999-*" v-model="rut" v-bind:class= "{ 'p-invalid': rutError }"  />
                 <label for="rut">Rut</label>
                 </span>
             </div>
@@ -88,6 +88,9 @@
         <div class="field col-12 sm:col-3">
             <ButtonComponent @click="editarRepartidorClicked" class="repartidor" label="Editar" icon="pi pi-check" iconPos="right" />
         </div>
+        <div class="field col-12 sm:col-3">
+            <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="Volver()" />
+        </div>
     </div>                    
 </template>
 
@@ -130,7 +133,7 @@ export default {
         const tipoLicencia= ref("");
         const fechaLicencia = ref([]);
 
-        let today;
+       
 
         const rutError = ref(false);
         const contrasenaError = ref(false);
@@ -151,17 +154,17 @@ export default {
                 .get(api + "/repartidor/" + route.params.id)
                 .then((response) => {
                     repartidor.value = response.data;
-                    rut.value = response.data;
-                    contrasena.value = response.data;
-                    email.value = response.data;
-                    nombres.value = response.data;
-                    apellidoPaterno.value = response.data;
-                    apellidoMaterno.value = response.data;
-                    telefono.value = response.data;
-                    direccion.value = response.data;
-                    fechaNacimiento.value = response.data;
-                    tipoLicencia.value = response.data;
-                    fechaLicencia.value = response.data;
+                    rut.value = response.data.RUT;
+                    contrasena.value = response.data.Contrasena;
+                    email.value = response.data.Email;
+                    nombres.value = response.data.Nombres;
+                    apellidoPaterno.value = response.data.ApellidoPaterno;
+                    apellidoMaterno.value = response.data.ApellidoMaterno;
+                    telefono.value = response.data.Telefono;
+                    direccion.value = response.data.Direccion;
+                    fechaNacimiento.value = response.data.Direccion;
+                    tipoLicencia.value = response.data.TipoLicencia;
+                    fechaLicencia.value = response.data.FechaLicencia;
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
@@ -170,6 +173,10 @@ export default {
                     console.log(err);
                 });
     };
+
+        var today = new Date();
+        var now = today.toLocaleDateString();
+
 
         const editarRepartidorClicked = () => {
             if (validar()) {
@@ -203,6 +210,12 @@ export default {
             if (rut.value.trim() === "") {
                 rutError.value = true;
                 openModal("Falta el rut del repartidor a registrar!");
+                return false;
+            }
+            const Udigito = rut.value.slice(-1);   
+            if (Udigito != "k" && isNaN(Udigito)) {
+                rutError.value = true;
+                openModal("El digitio verificador solo puede ser k o un numero!");
                 return false;
             }
             if (contrasena.value.trim() === "") {
@@ -256,7 +269,7 @@ export default {
                 openModal("Falta el tipo de licencia del repartidor a registrar!");
                 return false;
             }
-            if (fechaLicencia.value >= today ) {
+            if (fechaLicencia.value >= now ) {
                 fechaLicenciaError.value = true;
                 openModal("La fecha del control de la licencia tiene que estar habilitada del repartidor a registrar!");
                 return false;
@@ -312,7 +325,14 @@ export default {
                 const redirect = () => {
             router.push({name: "Repartidor"});
         };
-        return {             
+
+        const Volver = () => {
+            router.push({name: "Listado de Repartidores"});
+        }
+
+        
+        return { 
+            Volver,            
             rut,
             rutError,
             contrasena,
@@ -356,6 +376,14 @@ export default {
     color: var(--surface-0) !important;
 }
 .repartidor:hover {
+    background: var(--orange-500) !important;
+    color: var(--surface-0) !important;
+}
+::v-deep(.color) {
+    background: var(--orange-400) !important;
+    color: var(--surface-0) !important;
+}
+.color:hover {
     background: var(--orange-500) !important;
     color: var(--surface-0) !important;
 }
