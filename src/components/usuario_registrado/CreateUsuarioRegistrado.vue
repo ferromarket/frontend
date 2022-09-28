@@ -16,12 +16,12 @@
         <div class="field col-12">
             <span class="p-float-label">
                 <InputText id="rut" type="text" v-model="rut" v-bind:class="{ 'p-invalid': rutError }" />
-                <label for="rut">Rut</label>
+                <label for="rut">Rut sin puntos ni guion</label>
             </span>
         </div>
         <div class="field col-12">
             <span class="p-float-label">
-                <InputText id="contrasena" type="text" v-model="contrasena" v-bind:class="{ 'p-invalid': contrasenaError }" />
+                <PassWord v-model="contrasena" :feedback="false" v-bind:class="{ 'p-invalid': contrasenaError }" />
                 <label for="contrasena">Contraseña</label>
             </span>
         </div>
@@ -159,15 +159,15 @@ export default {
         const crearUsuario = () => {
             axios
                 .post(api + "/usuario", {
-                Nombre: nombre.value,
-                Direccion: direccion.value,
-                //ID: ID.value,
+                RUT:rut.value,
+                Contrasena:contrasena.value,
+                Email:email.value,
+                Nombres: nombre.value,
                 ApellidoPaterno: apellidoP.value,
                 ApellidoMaterno: apellidoM.value,
-                RUT:rut.value,
                 Telefono: Number(telefono.value),
-                FechaNacimiento: FechaNac.value,
-                Email:email.value
+                Direccion: direccion.value,
+                FechaNacimiento: FechaNac.value
             })
                 .then(function (response) {
                 if (response !== null && response.status === 200) {
@@ -184,7 +184,33 @@ export default {
         const redirect = (id) => {
             router.push("/usuario/" + id);
         };
-        return { nombre, nombreError,rut, rutError, contrasena, contrasenaError, email, emailError, apellidoP, apellidoPError, apellidoM, apellidoMError, telefono, telefonoError, FechaNac, FechaNacError, direccion, direccionError, crearUsuarioClicked, crearUsuario, validar, displayModal, dialogTitle, modalMessage, openModal, closeModal, error };
+        return { nombre, 
+            nombreError,
+            rut, 
+            rutError, 
+            contrasena, 
+            contrasenaError, 
+            email, 
+            emailError, 
+            apellidoP, 
+            apellidoPError, 
+            apellidoM, 
+            apellidoMError, 
+            telefono, 
+            telefonoError, 
+            FechaNac, 
+            FechaNacError, 
+            direccion, 
+            direccionError, 
+            crearUsuarioClicked, 
+            crearUsuario, 
+            validar, 
+            displayModal, 
+            dialogTitle, 
+            modalMessage, 
+            openModal, 
+            closeModal, 
+            error };
     }
 };
 </script>
