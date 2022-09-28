@@ -10,7 +10,43 @@
         <div class="field col-12">
             <span class="p-float-label">
                 <InputText id="nombre" type="text" v-model="nombre" v-bind:class="{ 'p-invalid': nombreError }" />
-                <label for="nombre">Nombre</label>
+                <label for="nombre">Nombres</label>
+            </span>
+        </div>
+        <div class="field col-12">
+            <span class="p-float-label">
+                <InputText id="rut" type="text" v-model="rut" v-bind:class="{ 'p-invalid': rutError }" />
+                <label for="rut">Rut sin puntos ni guion</label>
+            </span>
+        </div>
+        <div class="field col-12">
+            <span class="p-float-label">
+                <PassWord v-model="contrasena" :feedback="false" v-bind:class="{ 'p-invalid': contrasenaError }" />
+                <label for="contrasena">Contraseña</label>
+            </span>
+        </div>
+        <div class="field col-12">
+            <span class="p-float-label">
+                <InputText id="email" type="text" v-model="email" v-bind:class="{ 'p-invalid': emailError }" />
+                <label for="email">E-mail</label>
+            </span>
+        </div>
+        <div class="field col-12">
+            <span class="p-float-label">
+                <InputText id="apellidoP" type="text" v-model="apellidoP" v-bind:class="{ 'p-invalid': apellidoPError }" />
+                <label for="apellidoP">Apellido Paterno</label>
+            </span>
+        </div>
+        <div class="field col-12">
+            <span class="p-float-label">
+                <InputText id="apellidoM" type="text" v-model="apellidoM" v-bind:class="{ 'p-invalid': apellidoMError }" />
+                <label for="apellidoM">Apellido Materno</label>
+            </span>
+        </div>
+        <div class="field col-12">
+            <span class="p-float-label">
+                <InputMask id="telefono" mask="99999999" v-model="telefono"  v-bind:class="{ 'p-invalid': telefonoError }" />
+                <label for="telefono">Telefono</label>
             </span>
         </div>
         <div class="field col-12">
@@ -19,8 +55,14 @@
                 <label for="direccion">Dirección</label>
             </span>
         </div>
-        <div class="field col-12 sm:col-3">
-            <ButtonComponent @click="modificarUsuarioClicked" class="ferro" label="Modificar" icon="pi pi-check" iconPos="right" />
+        <div class="field col-12">
+            <span class="p-float-label">
+                <InputMask id="FechaNac" mask="9999-99-99" v-model="FechaNac" slotChar="yyyy-mm-dd" v-bind:class="{ 'p-invalid': FechaNacError }" />
+                <label for="FechaNac">Fecha de Nacimiento</label>
+            </span>
+        </div>
+        <div class="field col-12 sm:col-2">
+            <ButtonComponent @click="modificarUsuarioClicked" class="User" label="Modificar" icon="pi pi-check" iconPos="right" />
         </div>
     </div>                    
 </template>
@@ -48,7 +90,7 @@ export default {
         const dialogCallback = ref();
         const dialogTitle = ref("Error");
 
-        const usuario = ref();
+        const usuarios = ref();
 
         const nombre = ref("");
         const direccion = ref("");
@@ -60,10 +102,10 @@ export default {
 
         const getUsuario = () => {
             axios
-                .get(api + "/usuario_registrado/" + route.params.id)
+                .get(api + "/usuarios/" + route.params.id)
                 .then((response) => {
-                    usuario.value = response.data;
-                    nombre.value = response.data.Nombre;
+                    usuarios.value = response.data;
+                    nombre.value = response.data.Nombres;
                     direccion.value = response.data.Direccion;
                 })
                 .catch(err => {
