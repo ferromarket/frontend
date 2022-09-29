@@ -65,7 +65,7 @@ export default {
         });
 
         const rowSelected = (event) => {
-            router.push("/usuarios/" + event.data.ID);
+            router.push("/usuario_registrado/" + event.data.ID);
         };
 
         const getUsuarios = () => {
