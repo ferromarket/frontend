@@ -8,7 +8,27 @@
         <template #content>
             <div class="w-full justify-content-center p-fluid grid">
                 <div class="field col-12">
+                    <strong>Apeliido Paterno:</strong> {{ usuario.ApellidoPaterno }}
+                </div>
+            </div>
+            <div class="w-full justify-content-center p-fluid grid">
+                <div class="field col-12">
+                    <strong>Apeliido Materno:</strong> {{ usuario.ApellidoMaterno }}
+                </div>
+            </div>
+            <div class="w-full justify-content-center p-fluid grid">
+                <div class="field col-12">
+                    <strong>Telefono:</strong> {{ usuario.Telefono }}
+                </div>
+            </div>
+            <div class="w-full justify-content-center p-fluid grid">
+                <div class="field col-12">
                     <strong>Dirección:</strong> {{ usuario.Direccion }}
+                </div>
+            </div>
+            <div class="w-full justify-content-center p-fluid grid">
+                <div class="field col-12">
+                    <strong>Fecha de Nacimiento:</strong> {{ usuario.FechaNacimiento }}
                 </div>
             </div>
         </template>
@@ -48,7 +68,7 @@ export default {
 
         const getUsuario = () => {
             axios
-                .get(api + "/usuarios/" + route.params.id)
+                .get(api + "/usuario/" + route.params.id)
                 .then((response) => {
                     usuario.value = response.data;
                 })
