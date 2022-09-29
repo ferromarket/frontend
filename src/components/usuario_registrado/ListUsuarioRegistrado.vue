@@ -26,7 +26,7 @@
         <DataColumn field="Telefono" header="Telefono" :sortable="true"></DataColumn>
         <DataColumn field="Direccion" header="Dirección" :sortable="true"></DataColumn>
         <DataColumn field="FechaNacimiento" header="Fecha Nacimiento" :sortable="true"></DataColumn>
-        <DataColumn field="E-mail" header="E-mail" :sortable="true"></DataColumn>
+        <DataColumn field="Email" header="E-mail" :sortable="true"></DataColumn>
         <DataColumn style="min-width:8rem">
             <template #body="slotProps">
                 <ButtonComponent icon="pi pi-pencil" class="p-button-rounded p-button-warning mr-2" @click="modifyUsuario(slotProps.data)" />
@@ -97,7 +97,7 @@ export default {
         };
 
         const modifyUsuario = (usuario) => {
-            router.push("/usuario/modificar/" + usuario.ID);
+            router.push("/usuario_registrado/modificar/" + usuario.ID);
         };
 
         const confirmDeleteUsuario = (usuario) => {
