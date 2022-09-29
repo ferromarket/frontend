@@ -32,6 +32,13 @@
                 </div>
             </div>
         </template>
+        <template #footer="slotProps">
+            <div class="flex justify-content-center">
+                <ButtonComponent class="color justify-content-center"  icon="pi pi-pencil" label="Editar" @click="modifyUsuario(slotProps.data)" />
+                <ButtonComponent icon="pi pi-replay" label="Volver" class="color justify-content-center" style="margin-left: .5em" @click="volverUsuario()" />
+            </div>
+
+        </template>
     </CardPanel>
 </template>
 
@@ -79,10 +86,17 @@ export default {
                     console.log(err);
                 });
         };
-
+        const volverUsuario = () => {
+            router.push("/usuario_registrado/");
+        }
+        const modifyUsuario = () => {
+            router.push("/usuario_registrado/modificar/" + route.params.id);
+        }; 
         return {
             usuario,
-            getUsuario
+            getUsuario,
+            volverUsuario,
+            modifyUsuario
         };
     }
 };

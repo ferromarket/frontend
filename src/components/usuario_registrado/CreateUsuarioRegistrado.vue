@@ -15,14 +15,20 @@
         </div>
         <div class="field col-12">
             <span class="p-float-label">
-                <InputText id="rut" type="text" v-model="rut" v-bind:class="{ 'p-invalid': rutError }" />
-                <label for="rut">Rut sin puntos ni guion</label>
+                <InputMask mask="99.999.999-*" v-model="rut" v-bind:class="{ 'p-invalid': rutError }"  />
+                <label for="rut">Rut</label>
             </span>
         </div>
         <div class="field col-12">
             <span class="p-float-label">
                 <PassWord v-model="contrasena" :feedback="false" v-bind:class="{ 'p-invalid': contrasenaError }" />
                 <label for="contrasena">Contraseña</label>
+            </span>
+        </div>
+        <div class="field col-12">
+            <span class="p-float-label">
+                <PassWord v-model="contrasena2" :feedback="false" v-bind:class="{ 'p-invalid': contrasena2Error }" />
+                <label for="contrasena2">Repita la Contraseña</label>
             </span>
         </div>
         <div class="field col-12">
@@ -57,7 +63,7 @@
         </div>
         <div class="field col-12">
             <span class="p-float-label">
-                <InputMask id="FechaNac" mask="9999-99-99" v-model="FechaNac" slotChar="yyyy-mm-dd" v-bind:class="{ 'p-invalid': FechaNacError }" />
+                <InputMask id="FechaNac" mask="9999-99-99" v-model="FechaNac" slotChar="YYYY-MM-DD" v-bind:class="{ 'p-invalid': FechaNacError }" />
                 <label for="FechaNac">Fecha de Nacimiento</label>
             </span>
         </div>
@@ -85,12 +91,15 @@ export default {
         const modalMessage = ref("");
         const dialogCallback = ref();
         const dialogTitle = ref("Error");
+
         const nombre = ref("");
         const nombreError = ref(false);
         const rut = ref("");
         const rutError = ref(false);
         const contrasena = ref("");
         const contrasenaError = ref(false);
+        const contrasena2 = ref("");
+        const contrasena2Error = ref(false);
         const email = ref("");
         const emailError = ref(false);
         const apellidoP = ref("");
@@ -105,6 +114,7 @@ export default {
         const direccionError = ref(false);
         const error = ref(false);
         const savedID = ref(0);
+
         const crearUsuarioClicked = () => {
             if (validar()) {
                 confirm.require({
@@ -124,11 +134,62 @@ export default {
         const validar = () => {
             nombreError.value = false;
             direccionError.value = false;
+            FechaNacError.value = false;
+            contrasena2Error.value = false;
+            contrasenaError.value = false;
+            apellidoPError.value = false;
+            emailError.value = false;
+            telefonoError.value = false;
+            rutError.value = false;
             error.value = false;
+
             if (nombre.value.trim() === "") {
                 nombreError.value = true;
                 error.value = true;
                 openModal("Falta nombre del usuario!");
+                return false;
+            }
+            const Udigito = rut.value.slice(-1);
+            if (Udigito != "k" && isNaN(Udigito)) {
+                rutError.value = true;
+                error.value = true;
+                openModal("El digitio verificador solo puede ser k o un numero!");
+                return false;
+            }
+            
+            if (contrasena.value.trim() === "") {
+                contrasenaError.value = true;
+                error.value = true;
+                openModal("Ingrese una Contraseña");
+                return false;
+            }
+            if (contrasena2.value.trim() === "") {
+                contrasena2Error.value = true;
+                error.value = true;
+                openModal("Reingrese la Contraseña");
+                return false;
+            }
+            if (contrasena2.value.trim() != contrasena.value.trim()) {
+                contrasena2Error.value = true;
+                error.value = true;
+                openModal("Revise que la contraseña sea igual");
+                return false;
+            }
+            if (email.value.trim() === "") {
+                emailError.value = true;
+                openModal("Falta el Email del usuario a registrar!");
+                return false;
+            }
+            if (apellidoP.value.trim() === "") {
+                apellidoPError.value = true;
+                error.value = true;
+                openModal("Falta el apellido del usuario!");
+                return false;
+            }
+            if (telefono.value.trim() === "") {
+                telefonoError.value = true;
+                error.value = true;
+                openModal("Falta el Telefono del usuario a registrar!");
                 return false;
             }
             if (direccion.value.trim() === "") {
@@ -137,6 +198,12 @@ export default {
                 openModal("Ingrese una dirección");
                 return false;
             }
+            if (FechaNac.value === "" ) {
+                FechaNac.value = true;
+                openModal("Falta la Fecha Nacimiento del Usuario");
+                return false;
+            }
+            console.log(rut.value);
             return true;
         };
         const openModal = (message, callback = null, id = 0) => {
@@ -191,6 +258,8 @@ export default {
             rutError, 
             contrasena, 
             contrasenaError, 
+            contrasena2, 
+            contrasena2Error, 
             email, 
             emailError, 
             apellidoP, 
